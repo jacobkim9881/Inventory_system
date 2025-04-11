@@ -29,22 +29,32 @@ cc.log('inventories: ', inventories)
         let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기
         cc.log('closestInventory: ', closestInventory)
         if (closestInventory) {
-            let startX = closestInventory.x + borderPadding; 
-            let startY = closestInventory.y - borderPadding;
+            let startX = closestInventory.x - (closestInventory.node.width / 2) + borderPadding; 
+            let startY = closestInventory.y + (closestInventory.node.width / 2) - borderPadding;
 
             console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.x}, inventory width: ${closestInventory.width}, borderPadding: ${borderPadding}`);
 
             cc.log('node.x - startX: ', node.x - startX)
             cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
-            let newX = Math.max(0, Math.round((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 음수 방지
-let newY = Math.max(0, Math.round((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 음수 방지
+            let newX = Math.max(0, Math.floor((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 음수 방지
+let newY = Math.max(0, Math.floor((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 음수 방지
+
+cc.log('newX: ', newX)
+cc.log('newY: ', newY)
+cc.log(' node.x2: ',  node.x)
+cc.log(' node.y2: ',  node.y)
+cc.log('item: ', item)
+if (item.x === newX && item.y === newY) {
+    cc.log("⚠️ 아이템 위치 변경 없음, 이동 작업을 수행하지 않음");
+    return; // ✅ 변경 없음 → 바로 종료
+}
 
 
             if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
                 item.x = newX;
                 item.y = newY;
                 item.node.setPosition(closestInventory.getGridPosition(newX, newY));
-                
+                cc.log('item: ', item)
                 // ✅ 새로운 인벤토리로 부모 변경
                 if (item.inventory !== closestInventory) {
                     item.inventory.removeItem(item); // 기존 인벤토리에서 제거
@@ -63,10 +73,6 @@ let newY = Math.max(0, Math.round((startY - node.y) / (CELL_SIZE + cellSpacing))
                 node.destroy(); // 인벤토리 밖이면 제거
             }
             
-cc.log('newX: ', newX)
-cc.log('newY: ', newY)
-cc.log(' node.x2: ',  node.x)
-cc.log(' node.y2: ',  node.y)
         }
 
     });

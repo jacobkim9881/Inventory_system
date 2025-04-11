@@ -7,7 +7,7 @@ import { enableDrag } from "./DragHandler.js";
 import { inventoryManager } from "./SceneParser.js";
 import { CELL_SIZE, borderPadding, cellSpacing } from "./Config.js"; // ✅ Config.js에서 CELL_SIZE 임포트
 
-function updateInventoryUI() {
+export function updateInventoryUI() {
     inventoryManager.inventories.forEach((inventory) => {
         console.log(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}`);
     });

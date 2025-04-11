@@ -4,7 +4,7 @@
  */
 
 import { addItemToInventory } from "./ItemManager.js";
-import { updateUI } from "./UIManager.js";
+import { updateUI, updateInventoryUI } from "./UIManager.js";
 
 cc.Class({
     extends: cc.Component,
@@ -32,6 +32,8 @@ cc.Class({
             this.inventory.getComponent("Inventory").items = []; // 모든 아이템 제거
         } else {
             addItemToInventory(this.inventory.getComponent("Inventory"));
+            //updateInventoryUI(); // ✅ UI 업데이트 실행
+
         }
         
         updateUI(this.inventory.getComponent("Inventory")); // UI 업데이트
