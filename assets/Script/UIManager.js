@@ -38,7 +38,13 @@ cc.log('items at updateUI: ', inventory.items)
         let posY = startY - item.y * 100 - (CELL_SIZE/2 + cellSpacing); // ✅ Y값은 위에서 아래로 이동
 
 item.node.setPosition(posX, posY);
-        enableDrag(item.node, item, inventory);
+// ✅ 기존 이벤트가 등록되어 있는지 확인
+    if (!item.node.hasEventListener(cc.Node.EventType.TOUCH_MOVE)) {
+        enableDrag(item.node, item, inventory);; // ✅ 중복이 아닐 때만 enableDrag 호출
+    } else {
+        console.log(`⚠️ 중복 방지: 아이템 ${item.name}에 이미 드래그 이벤트가 등록됨.`);
+    }
+
         //inventory.node.addChild(item.node);
         cc.log('updateUI2: ', item.node)
         cc.log('inventory: ', inventory)
