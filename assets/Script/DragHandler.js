@@ -53,7 +53,7 @@ if (item.x === newX && item.y === newY) {
             if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
                 item.x = newX;
                 item.y = newY;
-                item.node.setPosition(closestInventory.getGridPosition(newX, newY));
+                item.node.setPosition(closestInventory.getGridPosition(item.node, newX, newY));
                 cc.log('item: ', item)
                 cc.log('inventory: ', inventory)
                 // ✅ 새로운 인벤토리로 부모 변경

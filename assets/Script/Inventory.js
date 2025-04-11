@@ -5,6 +5,8 @@ import { GRID_SIZE } from "./Util.js";
  * 인벤토리의 좌표 (x, y), 아이템 목록 및 스프라이트를 관리하는 클래스
  */
 const { ccclass, property } = cc._decorator;
+import { borderPadding, cellSpacing, CELL_SIZE } from "./Config"; // ✅ Config.js에서 가져오기
+
 
 @ccclass
 export class Inventory extends cc.Component {
@@ -20,14 +22,22 @@ export class Inventory extends cc.Component {
         this.items.push(item);
         this.node.addChild(item.node); // ✅ 인벤토리 UI에 추가
         item.node.setPosition(this.getGridPosition(item.x, item.y));
+        
     }
 
-    getGridPosition(x, y) { 
-        const CELL_SIZE = 100;
-        let startX = this.node.x - (this.node.width / 2); // ✅ 인벤토리 좌측 상단 X
-        let startY = this.node.y + (this.node.height / 2); // ✅ 인벤토리 좌측 상단 Y
-
-        return cc.v2(startX + x * CELL_SIZE, startY - y * CELL_SIZE);
+    getGridPosition(item, x, y) {
+        let itemWidth = item.width; // ✅ 아이템 크기 반영
+        let itemHeight = item.height;
+    
+        let posX = - (this.node.width / 2) + (itemWidth / 2) + borderPadding + cellSpacing + (x * CELL_SIZE); // ✅ X 위치 보정
+        let posY = (this.node.height / 2) - (itemHeight / 2) - borderPadding - cellSpacing - (y * CELL_SIZE); // ✅ Y 위치 보정
+    
+        console.log(`🟢 아이템: ${item.name}, X: ${posX}, Y: ${posY}`);
+    
+    
+    
+        return cc.v2(posX, posY); // ✅ 개별 변수로 정리하여 반환
+    
 
     }
 
