@@ -55,13 +55,22 @@ if (item.x === newX && item.y === newY) {
                 item.y = newY;
                 item.node.setPosition(closestInventory.getGridPosition(newX, newY));
                 cc.log('item: ', item)
+                cc.log('inventory: ', inventory)
                 // ✅ 새로운 인벤토리로 부모 변경
-                if (item.inventory !== closestInventory) {
-                    item.inventory.removeItem(item); // 기존 인벤토리에서 제거
-                    closestInventory.addItem(item); // 새로운 인벤토리에 추가
+                if (inventory !== closestInventory) {
+                    if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인
+                        inventory.removeItem(item); // 기존 인벤토리에서 제거
+                        closestInventory.addItem(item); // 새로운 인벤토리에 추가
+                        cc.log("✅ 아이템 이동 완료");
+                    } else {
+                        cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
+                    }
+                    cc.log('inventory: ', inventory)
+    cc.log('closestInventory: ', closestInventory)
+                
                     //closestInventory.node.addChild(item.node);
                     //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
-                    item.inventory = closestInventory; // 부모 인벤토리 변경
+                    //item.inventory = closestInventory; // 부모 인벤토리 변경
                 }
 
                 if (node.zIndex < closestInventory.node.zIndex) { // ✅ 인벤토리보다 낮을 때만 zIndex 증가
