@@ -1,0 +1,8 @@
+{
+  "engine": "cocos-creator-js",
+  "packages": "packages",
+  "name": "Inventory_system",
+  "id": "edfa3150-5d5e-4b2f-8e8c-791f0d70c4cd",
+  "version": "2.4.9",
+  "isNew": false
+}
