@@ -63,6 +63,7 @@ let inventory = getInventory(inventoryNode);
 
        
         } else {
+            cc.log('this.inventory: ', this.inventory)
             addItemToInventory(this.inventory.getComponent("Inventory"));
             //updateInventoryUI(); // ✅ UI 업데이트 실행
 

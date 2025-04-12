@@ -36,7 +36,8 @@ cc.log('items at updateUI: ', inventory.items)
         // ✅ 인벤토리 스프라이트의 좌측 상단을 기준으로 위치 조정
         let posX = startX + item.x * 100 + (CELL_SIZE/2 + cellSpacing);
         let posY = startY - item.y * 100 - (CELL_SIZE/2 + cellSpacing); // ✅ Y값은 위에서 아래로 이동
-
+cc.log('posX: ', posX)
+cc.log('posY: ', posY)
 item.node.setPosition(posX, posY);
 // ✅ 기존 이벤트가 등록되어 있는지 확인
     if (!item.node.hasEventListener(cc.Node.EventType.TOUCH_MOVE)) {
