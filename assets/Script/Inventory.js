@@ -18,6 +18,10 @@ export class Inventory extends cc.Component {
         this.items = [];
     }
 
+    hasItem(item) {
+        return this.items.includes(item); // ✅ 아이템이 존재하는지 확인
+    }
+
     addItem(item) {
         this.items.push(item);
         this.node.addChild(item.node); // ✅ 인벤토리 UI에 추가
