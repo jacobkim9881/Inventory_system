@@ -5,6 +5,7 @@
 
 import { addItemToInventory } from "./ItemManager.js";
 import { updateUI, updateInventoryUI } from "./UIManager.js";
+import { findInventoryNodes, getInventory } from "./Util";
 
 cc.Class({
     extends: cc.Component,
@@ -21,21 +22,51 @@ cc.Class({
         this.node.on("click", this.onButtonClick, this);
     },
 
+    
     onButtonClick() {
-        let inventoryComponent = this.inventory.getComponent("Inventory");
 
         if (this.isResetButton) {
-            inventoryComponent.items.forEach(item => {
-                item.node.destroy(); // ✅ 아이템 스프라이트 삭제
-        });
+            // ✅ 현재 씬에서 모든 노드 가져오기
+    let scene = cc.director.getScene();
+    let inventoryNodes = findInventoryNodes(scene);
+    cc.log('scene.children. ', scene.children)
+cc.log('inventoryNodes: ', inventoryNodes)
+    inventoryNodes.forEach(inventoryNode => {
+        
+let inventory = getInventory(inventoryNode); 
 
-            this.inventory.getComponent("Inventory").items = []; // 모든 아이템 제거
+        cc.log('inventory at foreach: ',inventory)
+        if (inventory) {
+                inventory.items.forEach(item => {
+                    item.node.removeComponent(cc.Sprite); // ✅ 스프라이트 제거
+                    item.node.destroy(); // ✅ 아이템 노드 제거
+                });
+                
+                console.log(`🗑️ 인벤토리 ${inventoryNode.name} 아이템 및 스프라이트 제거 완료!`);
+            } else {
+                console.warn(`⚠️ Inventory 컴포넌트를 찾을 수 없음: ${inventoryNode.name}`);
+            }
+    });
+
+  //  📌 2️⃣  반복문이 끝난 후 실행해야 함
+//✔️ 루프 내부에서 실행하면, 아이템이 완전히 제거되기 전에 UI가 업데이트될 수 있
+
+    inventoryNodes.forEach(inventoryNode => {
+        let inventory = inventoryNode.getComponent(inventoryNode._components.find(comp => comp.name.includes("Inventory")).name);
+        if (inventory) {
+            //inventory.updateUI(); // ✅ 루프 종료 후 UI 업데이트
+        }
+    });
+
+    console.log("✅ 모든 인벤토리 아이템이 제거되었습니다!");
+
+
+       
         } else {
             addItemToInventory(this.inventory.getComponent("Inventory"));
             //updateInventoryUI(); // ✅ UI 업데이트 실행
 
+            updateUI(this.inventory.getComponent("Inventory")); // UI 업데이트
         }
-        
-        updateUI(this.inventory.getComponent("Inventory")); // UI 업데이트
     },
 });
