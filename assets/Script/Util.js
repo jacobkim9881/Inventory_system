@@ -37,6 +37,11 @@ export function findInventoryComponent(node) {
     return node._components.find(comp => comp.name.includes("Inventory"));
 }
 
+export function findValidComponent(node, keyword) {
+    return node._components.find(comp => comp.name.includes(keyword) && !comp.name.includes("<Sprite>"));
+}
+
+
 export function getInventory(node) {
     let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
     let cleanName = ""; 
