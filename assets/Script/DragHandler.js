@@ -77,7 +77,8 @@ export function enableDrag(node, item, inventory) {
           node.zIndex = closestInventory.node.zIndex + 1;
         }
 
-        //updateUI(closestInventory);
+        updateUI(inventory);
+        updateUI(closestInventory);
       } else {
         node.destroy(); // 인벤토리 밖이면 제거
       }

@@ -35,17 +35,18 @@ cc.log('inventoryNodes: ', inventoryNodes)
         
 let inventory = getInventory(inventoryNode); 
 
-        cc.log('inventory at foreach: ',inventory)
         if (inventory) {
                 inventory.items.forEach(item => {
                     item.node.removeComponent(cc.Sprite); // ✅ 스프라이트 제거
                     item.node.destroy(); // ✅ 아이템 노드 제거
                 });
-                
+                inventory.items = [];
                 console.log(`🗑️ 인벤토리 ${inventoryNode.name} 아이템 및 스프라이트 제거 완료!`);
             } else {
                 console.warn(`⚠️ Inventory 컴포넌트를 찾을 수 없음: ${inventoryNode.name}`);
             }
+            
+        cc.log('inventory at foreach: ',inventory)
     });
 
   //  📌 2️⃣  반복문이 끝난 후 실행해야 함
