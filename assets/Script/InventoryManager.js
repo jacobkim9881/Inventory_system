@@ -1,3 +1,4 @@
+import { findInventoryComponent } from "./Util"; // ✅ Util.js에서 함수 가져오기
 
 export class InventoryManager {
     constructor(inventories) {
@@ -21,16 +22,18 @@ export class InventoryManager {
             }
         });
         if (closestInventory) {
-            let inventoryComponent = closestInventory.getComponent("Inventory"); // ✅ 인벤토리 컴포넌트 가져오기
-            
+            let inventoryComponent = findInventoryComponent(closestInventory); // ✅ Util.js 함수 사용
+            let inventory = closestInventory.getComponent(inventoryComponent?.name); // ✅ 안전하게 가져오기
+
             if (inventoryComponent) {
                 console.log(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);
-                return inventoryComponent; // ✅ 인벤토리 컴포넌트 반환
+                return inventory; // ✅ 인벤토리 반환
             } else {
-                console.warn("⚠️ 인벤토리 컴포넌트가 존재하지 않습니다.");
+                console.warn("⚠️ 인벤토리 컴포넌트를 찾을 수 없습니다.");
                 return null;
             }
         }
+
     
         console.warn("⚠️ 가까운 인벤토리를 찾지 못했습니다.");
         return null;
