@@ -44,11 +44,6 @@ export function enableDrag(node, item, inventory) {
       cc.log(' node.x2: ',  node.x)
       cc.log(' node.y2: ',  node.y)
       cc.log('item: ', item)
-      if (item.x === newX && item.y === newY) {
-        cc.log("⚠️ 아이템 위치 변경 없음, 이동 작업을 수행하지 않음");
-        return; // ✅ 변경 없음 → 바로 종료
-      }
-
 
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
         item.x = newX;
@@ -71,7 +66,12 @@ export function enableDrag(node, item, inventory) {
           //closestInventory.node.addChild(item.node);
           //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
           //item.inventory = closestInventory; // 부모 인벤토리 변경
-        }
+        } else {
+            if (item.x === newX && item.y === newY) {
+                cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+                return; // ✅ 같은 인벤토리에서 위치 변경이 없으면 종료
+            }
+        }         
 
         if (node.zIndex < closestInventory.node.zIndex) { // ✅ 인벤토리보다 낮을 때만 zIndex 증가
           node.zIndex = closestInventory.node.zIndex + 1;
