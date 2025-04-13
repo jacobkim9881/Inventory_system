@@ -5,7 +5,7 @@
 
 import { addItemToInventory } from "./ItemManager.js";
 import { updateUI } from "./UIManager.js";
-import { findInventoryNodes, getInventory, findValidComponent } from "./Util";
+import { findInventoryNodes, findValidComponent } from "./Util";
 
 cc.Class({
     extends: cc.Component,
