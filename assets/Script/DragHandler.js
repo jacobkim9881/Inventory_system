@@ -28,12 +28,12 @@ export function enableDrag(node, item, inventory) {
     cc.log('inventories: ', inventories)
     let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기
     cc.log('closestInventory: ', closestInventory)
-    
+    // newX 계산 틀림 이슈
     if (closestInventory) {
-      let startX = closestInventory.x - (closestInventory.node.width / 2) + borderPadding; 
-      let startY = closestInventory.y + (closestInventory.node.width / 2) - borderPadding;
+      let startX = closestInventory.node.x - (closestInventory.node.width / 2) + borderPadding; 
+      let startY = closestInventory.node.y + (closestInventory.node.width / 2) - borderPadding;
 
-      console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
+      console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.node.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
 
       cc.log('node.x - startX: ', node.x - startX)
       cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
