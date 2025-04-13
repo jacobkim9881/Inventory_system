@@ -10,15 +10,23 @@ export class InventoryManager {
     let minDistance = Infinity;
     // 가장 가까운 인벤토리 못찾는 이슈
     this.inventories.forEach((inventory) => {
-      let distX = Math.abs(node.x - inventory.x); // ✅ 클래스 내부의 `inventory.x` 참조
-      let distY = Math.abs(node.y - inventory.y);
-      let distance = Math.sqrt(distX ** 2 + distY ** 2);
+      let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
+let inventoryWorldPos = inventory.convertToWorldSpaceAR(cc.v2(0, 0));
+
+let distX = Math.abs(nodeWorldPos.x - inventoryWorldPos.x);
+let distY = Math.abs(nodeWorldPos.y - inventoryWorldPos.y);
+
+let distance = Math.sqrt(distX ** 2 + distY ** 2);
       cc .log('inventory: ', inventory)
-      //dlog(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}, distance: ${distance}`); // ✅ 내부 `items` 접근 가능
-      dlog(`노드 위치: (${node.x}, ${node.y})`);
-      dlog(`인벤토리 위치: (${inventory.x}, ${inventory.y})`);
-      dlog(`X축 거리 계산: Math.abs(${node.x} - ${inventory.x}) = ${Math.abs(node.x - inventory.x)}`);
-      dlog(`Y축 거리 계산: Math.abs(${node.y} - ${inventory.y}) = ${Math.abs(node.y - inventory.y)}`);
+      
+      //cc.log(`노드 위치: (${node.x}, ${node.y})`);
+      //cc.log(`인벤토리 위치: (${inventory.x}, ${inventory.y})`);
+
+cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
+cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
+
+cc.log(`📏 거리 계산: X=${distX}, Y=${distY}`);
+      cc.log('distance: ', distance)
       if (distance < minDistance) {
         minDistance = distance;
         closestInventory = inventory;
@@ -28,7 +36,7 @@ export class InventoryManager {
       let inventoryComponent = findValidComponent(closestInventory, "Inventory"); // ✅ Util.js 함수 사용
             
       if (inventoryComponent) {
-        dlog(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);
+        cc.log(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);
         return inventoryComponent; // ✅ 인벤토리 반환
       } else {
         console.warn("⚠️ 인벤토리 컴포넌트를 찾을 수 없습니다.");
