@@ -44,6 +44,7 @@ export function findValidComponent(node, keyword) {
 
 export function getInventory(node) {
     let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
+    cc.log('inventoryComponent: ', inventoryComponent)
     let cleanName = ""; 
     let inventory = null;
 

@@ -4,8 +4,8 @@
  */
 
 import { addItemToInventory } from "./ItemManager.js";
-import { updateUI, updateInventoryUI } from "./UIManager.js";
-import { findInventoryNodes, getInventory } from "./Util";
+import { updateUI } from "./UIManager.js";
+import { findInventoryNodes, getInventory, findValidComponent } from "./Util";
 
 cc.Class({
     extends: cc.Component,
@@ -33,7 +33,7 @@ cc.Class({
 cc.log('inventoryNodes: ', inventoryNodes)
     inventoryNodes.forEach(inventoryNode => {
         
-let inventory = getInventory(inventoryNode); 
+let inventory = findValidComponent(inventoryNode, "Inventory"); 
 
         if (inventory) {
                 inventory.items.forEach(item => {
@@ -53,7 +53,7 @@ let inventory = getInventory(inventoryNode);
 //✔️ 루프 내부에서 실행하면, 아이템이 완전히 제거되기 전에 UI가 업데이트될 수 있
 
     inventoryNodes.forEach(inventoryNode => {
-        let inventory = getInventory(inventoryNode)
+        let inventory = findValidComponent(inventoryNode, "Inventory"); 
         if (inventory) {
             updateUI(inventory); // ✅ 루프 종료 후 UI 업데이트
         }
