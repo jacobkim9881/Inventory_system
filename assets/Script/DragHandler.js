@@ -14,9 +14,9 @@ import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
 export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
     if (node.zIndex < 999) { // ✅ 이미 높은 zIndex라면 변경하지 않음
-      node.zIndex = 999; 
+      node.zIndex = 999;       
+    node.parent.zIndex = 99; // ✅ 부모 노드의 `zIndex` 높이기
     }
-
     let delta = event.touch.getDelta();
     node.x += delta.x;
     node.y += delta.y;
@@ -28,6 +28,7 @@ export function enableDrag(node, item, inventory) {
     cc.log('inventories: ', inventories)
     let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기
     cc.log('closestInventory: ', closestInventory)
+    
     if (closestInventory) {
       let startX = closestInventory.x - (closestInventory.node.width / 2) + borderPadding; 
       let startY = closestInventory.y + (closestInventory.node.width / 2) - borderPadding;
@@ -89,6 +90,10 @@ export function enableDrag(node, item, inventory) {
             
     }
 
+      node.zIndex = 1; // ✅ 터치가 끝나면 원래 `zIndex` 값으로 복구
+      if (node.parent) {
+          node.parent.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
+      }
   });
 }
 
