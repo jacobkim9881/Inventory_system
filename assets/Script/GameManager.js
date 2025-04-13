@@ -6,18 +6,18 @@
 import { Inventory } from "./Inventory.js";
 
 export class GameManager {
-    constructor(rootNode, inventorySprites) {
-        this.rootNode = rootNode;
+  constructor(rootNode, inventorySprites) {
+    this.rootNode = rootNode;
 
-        // 인벤토리 초기화
-        this.inventoryA = inventorySprites[0].addComponent(Inventory);
-        this.inventoryB = inventorySprites[1].addComponent(Inventory);
+    // 인벤토리 초기화
+    this.inventoryA = inventorySprites[0].addComponent(Inventory);
+    this.inventoryB = inventorySprites[1].addComponent(Inventory);
 
-        this.initializeUI();
-    }
+    this.initializeUI();
+  }
 
-    initializeUI() {
-        this.rootNode.addChild(this.inventoryA.node);
-        this.rootNode.addChild(this.inventoryB.node);
-    }
+  initializeUI() {
+    this.rootNode.addChild(this.inventoryA.node);
+    this.rootNode.addChild(this.inventoryB.node);
+  }
 }

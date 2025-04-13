@@ -15,7 +15,7 @@ export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
     if (node.zIndex < 999) { // ✅ 이미 높은 zIndex라면 변경하지 않음
       node.zIndex = 999;       
-    node.parent.zIndex = 99; // ✅ 부모 노드의 `zIndex` 높이기
+      node.parent.zIndex = 99; // ✅ 부모 노드의 `zIndex` 높이기
     }
     let delta = event.touch.getDelta();
     node.x += delta.x;
@@ -49,7 +49,7 @@ export function enableDrag(node, item, inventory) {
         if (item.x === newX && item.y === newY && inventory._id === closestInventory._id) { 
           cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
           return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
-      }
+        }
         item.x = newX;
         item.y = newY;
         cc.log('item: ', item)
@@ -90,10 +90,10 @@ export function enableDrag(node, item, inventory) {
             
     }
 
-      node.zIndex = 1; // ✅ 터치가 끝나면 원래 `zIndex` 값으로 복구
-      if (node.parent) {
-          node.parent.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
-      }
+    node.zIndex = 1; // ✅ 터치가 끝나면 원래 `zIndex` 값으로 복구
+    if (node.parent) {
+      node.parent.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
+    }
   });
 }
 

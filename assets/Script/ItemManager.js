@@ -5,38 +5,38 @@
 
 import { GRID_SIZE, isOccupied, isValidPosition } from "./Util.js";
 export function addItemToInventory(inventory) {
-    let { x, y } = inventory;
+  let { x, y } = inventory;
 
-    if (!isOccupied(x, y, inventory)) {
-        let newItem = createItemSprite(x, y);
-        inventory.addItem(newItem);
-    } else {
-        do {
-            let newX = x + 1;
-            if (newX >= GRID_SIZE) {
-                x = 0;
-                y += 1;
-            } else {
-                x = newX;
-            }
-        } while (isOccupied(x, y, inventory) && y < GRID_SIZE);
+  if (!isOccupied(x, y, inventory)) {
+    let newItem = createItemSprite(x, y);
+    inventory.addItem(newItem);
+  } else {
+    do {
+      let newX = x + 1;
+      if (newX >= GRID_SIZE) {
+        x = 0;
+        y += 1;
+      } else {
+        x = newX;
+      }
+    } while (isOccupied(x, y, inventory) && y < GRID_SIZE);
 
-        if (isValidPosition(x, y)) {
-            let newItem = createItemSprite(x, y);
-            inventory.addItem(newItem);
-        }
+    if (isValidPosition(x, y)) {
+      let newItem = createItemSprite(x, y);
+      inventory.addItem(newItem);
     }
+  }
 }
 
 function createItemSprite(x, y) {
-    let itemNode = new cc.Node("Item");
-    let sprite = itemNode.addComponent(cc.Sprite);
+  let itemNode = new cc.Node("Item");
+  let sprite = itemNode.addComponent(cc.Sprite);
 
-    cc.resources.load("textures/test", cc.SpriteFrame, (err, spriteFrame) => {
-        if (!err) {
-            sprite.spriteFrame = spriteFrame;
-        }
-    });
+  cc.resources.load("textures/test", cc.SpriteFrame, (err, spriteFrame) => {
+    if (!err) {
+      sprite.spriteFrame = spriteFrame;
+    }
+  });
 
-    return { node: itemNode, x, y };
+  return { node: itemNode, x, y };
 }

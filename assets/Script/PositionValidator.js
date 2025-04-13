@@ -4,9 +4,9 @@
  */
 
 export function isValidPosition(x, y) {
-    return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
+  return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
 }
 
 export function isOccupied(x, y, inventory) {
-    return inventory.items.some(item => item.x === x && item.y === y);
+  return inventory.items.some(item => item.x === x && item.y === y);
 }
