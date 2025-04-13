@@ -32,7 +32,7 @@ export function enableDrag(node, item, inventory) {
       let startX = closestInventory.x - (closestInventory.node.width / 2) + borderPadding; 
       let startY = closestInventory.y + (closestInventory.node.width / 2) - borderPadding;
 
-      console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.x}, inventory width: ${closestInventory.width}, borderPadding: ${borderPadding}`);
+      console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
 
       cc.log('node.x - startX: ', node.x - startX)
       cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
@@ -46,9 +46,12 @@ export function enableDrag(node, item, inventory) {
       cc.log('item: ', item)
 
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
+        if (item.x === newX && item.y === newY && inventory._id === closestInventory._id) { 
+          cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+          return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
+      }
         item.x = newX;
         item.y = newY;
-        item.node.setPosition(closestInventory.getGridPosition(item.node, newX, newY));
         cc.log('item: ', item)
         cc.log('inventory: ', inventory)
         // ✅ 새로운 인벤토리로 부모 변경
@@ -71,13 +74,10 @@ export function enableDrag(node, item, inventory) {
           //closestInventory.node.addChild(item.node);
           //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
           //item.inventory = closestInventory; // 부모 인벤토리 변경
-        } else {
-            if (item.x === newX && item.y === newY) {
-                cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
-                return; // ✅ 같은 인벤토리에서 위치 변경이 없으면 종료
-            }
-        }         
-
+        } 
+        
+        item.node.setPosition(closestInventory.getGridPosition(item.node, newX, newY));
+        
         if (node.zIndex < closestInventory.node.zIndex) { // ✅ 인벤토리보다 낮을 때만 zIndex 증가
           node.zIndex = closestInventory.node.zIndex + 1;
         }
