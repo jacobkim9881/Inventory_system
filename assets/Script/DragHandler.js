@@ -52,10 +52,15 @@ export function enableDrag(node, item, inventory) {
         cc.log('item: ', item)
         cc.log('inventory: ', inventory)
         // ✅ 새로운 인벤토리로 부모 변경
+        cc.log('(inventory !== closestInventory): ', (inventory !== closestInventory))
+        cc.log('inventory: ', inventory)
+        cc.log('closestInventory: ', closestInventory)
+              
         if (inventory !== closestInventory) {
-          if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인            
-            closestInventory.addItem(item); // 새로운 인벤토리에 추가
+          cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
+          if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
             inventory.removeItem(item); // 기존 인벤토리에서 제거
+            closestInventory.addItem(item); // 새로운 인벤토리에 추가
             cc.log("✅ 아이템 이동 완료");
           } else {
             cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");

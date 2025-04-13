@@ -46,11 +46,13 @@ export class Inventory extends cc.Component {
     }
 
     removeItem(item) {
-        const index = this.items.indexOf(item);
-        if (index !== -1) {
-            this.items.splice(index, 1);
-            item.node.destroy();
-        }
+            this.items = this.items.filter(i => i !== item);
+            
+            if (item.node.parent === this.node) { 
+                item.node.removeFromParent(false); // ✅ 부모 노드에서만 제거, 노드 자체는 유지
+            }
+        
+            item.inventory = null; // ✅ 인벤토리 참조 제거
     }
 
 }
