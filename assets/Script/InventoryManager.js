@@ -14,11 +14,11 @@ export class InventoryManager {
       let distY = Math.abs(node.y - inventory.y);
       let distance = Math.sqrt(distX ** 2 + distY ** 2);
       cc .log('inventory: ', inventory)
-      //console.log(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}, distance: ${distance}`); // ✅ 내부 `items` 접근 가능
-      console.log(`노드 위치: (${node.x}, ${node.y})`);
-      console.log(`인벤토리 위치: (${inventory.x}, ${inventory.y})`);
-      console.log(`X축 거리 계산: Math.abs(${node.x} - ${inventory.x}) = ${Math.abs(node.x - inventory.x)}`);
-      console.log(`Y축 거리 계산: Math.abs(${node.y} - ${inventory.y}) = ${Math.abs(node.y - inventory.y)}`);
+      //dlog(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}, distance: ${distance}`); // ✅ 내부 `items` 접근 가능
+      dlog(`노드 위치: (${node.x}, ${node.y})`);
+      dlog(`인벤토리 위치: (${inventory.x}, ${inventory.y})`);
+      dlog(`X축 거리 계산: Math.abs(${node.x} - ${inventory.x}) = ${Math.abs(node.x - inventory.x)}`);
+      dlog(`Y축 거리 계산: Math.abs(${node.y} - ${inventory.y}) = ${Math.abs(node.y - inventory.y)}`);
       if (distance < minDistance) {
         minDistance = distance;
         closestInventory = inventory;
@@ -28,7 +28,7 @@ export class InventoryManager {
       let inventoryComponent = findValidComponent(closestInventory, "Inventory"); // ✅ Util.js 함수 사용
             
       if (inventoryComponent) {
-        console.log(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);
+        dlog(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);
         return inventoryComponent; // ✅ 인벤토리 반환
       } else {
         console.warn("⚠️ 인벤토리 컴포넌트를 찾을 수 없습니다.");

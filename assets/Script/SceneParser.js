@@ -16,7 +16,7 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
   const inventories = parseInventories(scene);
   inventoryManager = new InventoryManager(inventories); // ✅ 씬 로드 후 인스턴스 할당
 
-  console.log("✅ inventoryManager 생성 완료:", inventoryManager);
+  dlog("✅ inventoryManager 생성 완료:", inventoryManager);
 });
 
 export { inventoryManager }; // ✅ 모듈 최상단에서만 export 가능

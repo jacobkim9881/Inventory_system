@@ -9,7 +9,7 @@ import { CELL_SIZE, borderPadding, cellSpacing } from "./Config.js"; // ✅ Conf
 
 export function updateInventoryUI() {
   inventoryManager.inventories.forEach((inventory) => {
-    console.log(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}`);
+    dlog(`인벤토리: ${inventory.name}, 아이템 개수: ${inventory.items.length}`);
   });
 }
 
@@ -20,9 +20,9 @@ export function updateUI(inventory) {
   let startY = (inventory.node.height / 2) - borderPadding; // ✅ 좌측 상단 Y (테두리 간격 적용)
 
 
-  cc.log('items at updateUI: ', inventory.items)
+  dlog('items at updateUI: ', inventory.items)
   inventory.items.forEach(item => {
-    cc.log('updateUI1: ', item.node)
+    dlog('updateUI1: ', item.node)
     // ✅ 기존 노드가 이미 추가되었는지 확인
            
     //let itemNode = new cc.Node("Item");
@@ -36,23 +36,23 @@ export function updateUI(inventory) {
     let posX = startX + item.x * 100 + (CELL_SIZE/2 + cellSpacing);
     let posY = startY - item.y * 100 - (CELL_SIZE/2 + cellSpacing); // ✅ Y값은 위에서 아래로 이동
         
-    cc.log('updateUI: ', item.node)
-    cc.log('item.node.active', item.node.active)
-    cc.log('posX: ', posX)
-    cc.log('posY: ', posY)
-    cc.log('item.node.setPosition: ', item.node.setPosition)
+    dlog('updateUI: ', item.node)
+    dlog('item.node.active', item.node.active)
+    dlog('posX: ', posX)
+    dlog('posY: ', posY)
+    dlog('item.node.setPosition: ', item.node.setPosition)
 
     item.node.setPosition(posX, posY);
     // ✅ 기존 이벤트가 등록되어 있는지 확인
     if (!item.node.hasEventListener(cc.Node.EventType.TOUCH_MOVE)) {
       enableDrag(item.node, item, inventory);; // ✅ 중복이 아닐 때만 enableDrag 호출
     } else {
-      console.log(`⚠️ 중복 방지: 아이템 ${item.name}에 이미 드래그 이벤트가 등록됨.`);
+      dlog(`⚠️ 중복 방지: 아이템 ${item.name}에 이미 드래그 이벤트가 등록됨.`);
     }
 
     //inventory.node.addChild(item.node);
-    cc.log('updateUI2: ', item.node)
-    cc.log('inventory: ', inventory)
+    dlog('updateUI2: ', item.node)
+    dlog('inventory: ', inventory)
   });
 
 

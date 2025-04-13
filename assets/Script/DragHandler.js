@@ -24,52 +24,52 @@ export function enableDrag(node, item, inventory) {
 
   node.on(cc.Node.EventType.TOUCH_END, (event) => {
     const inventories = parseInventories(cc.director.getScene()); // ✅ 씬에서 인벤토리 가져오기
-    cc.log('cc.director.getScene(): ', cc.director.getScene())
-    cc.log('inventories: ', inventories)
+    dlog('cc.director.getScene(): ', cc.director.getScene())
+    dlog('inventories: ', inventories)
     let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기
-    cc.log('closestInventory: ', closestInventory)
+    dlog('closestInventory: ', closestInventory)
     // newX 계산 틀림 이슈
     if (closestInventory) {
       let startX = closestInventory.node.x - (closestInventory.node.width / 2) + borderPadding; 
       let startY = closestInventory.node.y + (closestInventory.node.width / 2) - borderPadding;
 
-      console.log(`startX: ${startX}, closestInventory.x: ${closestInventory.node.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
+      dlog(`startX: ${startX}, closestInventory.x: ${closestInventory.node.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
 
-      cc.log('node.x - startX: ', node.x - startX)
-      cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
+      dlog('node.x - startX: ', node.x - startX)
+      dlog('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
       let newX = Math.abs(Math.floor((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 양수 변환
       let newY = Math.abs(Math.floor((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 양수 변환
-      cc.log('newX: ', newX)
-      cc.log('newY: ', newY)
-      cc.log(' node.x2: ',  node.x)
-      cc.log(' node.y2: ',  node.y)
-      cc.log('item: ', item)
+      dlog('newX: ', newX)
+      dlog('newY: ', newY)
+      dlog(' node.x2: ',  node.x)
+      dlog(' node.y2: ',  node.y)
+      dlog('item: ', item)
 
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
         if (item.x === newX && item.y === newY && inventory._id === closestInventory._id) { 
-          cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+          dlog("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
           return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
         }
         item.x = newX;
         item.y = newY;
-        cc.log('item: ', item)
-        cc.log('inventory: ', inventory)
+        dlog('item: ', item)
+        dlog('inventory: ', inventory)
         // ✅ 새로운 인벤토리로 부모 변경
-        cc.log('(inventory !== closestInventory): ', (inventory !== closestInventory))
-        cc.log('inventory: ', inventory)
-        cc.log('closestInventory: ', closestInventory)
+        dlog('(inventory !== closestInventory): ', (inventory !== closestInventory))
+        dlog('inventory: ', inventory)
+        dlog('closestInventory: ', closestInventory)
               
         if (inventory !== closestInventory) {
-          cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
+          dlog('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
           if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
             inventory.removeItem(item); // 기존 인벤토리에서 제거
             closestInventory.addItem(item); // 새로운 인벤토리에 추가
-            cc.log("✅ 아이템 이동 완료");
+            dlog("✅ 아이템 이동 완료");
           } else {
-            cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
+            dlog("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
           }
-          cc.log('inventory: ', inventory)
-          cc.log('closestInventory: ', closestInventory)
+          dlog('inventory: ', inventory)
+          dlog('closestInventory: ', closestInventory)
                 
           //closestInventory.node.addChild(item.node);
           //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
@@ -102,6 +102,6 @@ export function enableDrag(node, item, inventory) {
  * 아이템이 겹치는 가장 가까운 인벤토리 찾기
  */
 function getClosestInventory(node) {
-  cc.log('inventoryManager: ', inventoryManager)
+  dlog('inventoryManager: ', inventoryManager)
   return inventoryManager.getClosestInventory(node); // ✅ 인벤토리 관리 클래스를 활용하여 찾기
 }
