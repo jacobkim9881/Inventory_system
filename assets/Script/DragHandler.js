@@ -36,9 +36,8 @@ export function enableDrag(node, item, inventory) {
 
       cc.log('node.x - startX: ', node.x - startX)
       cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
-      let newX = Math.max(0, Math.floor((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 음수 방지
-      let newY = Math.max(0, Math.floor((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 음수 방지
-
+      let newX = Math.abs(Math.floor((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 양수 변환
+      let newY = Math.abs(Math.floor((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 양수 변환
       cc.log('newX: ', newX)
       cc.log('newY: ', newY)
       cc.log(' node.x2: ',  node.x)
