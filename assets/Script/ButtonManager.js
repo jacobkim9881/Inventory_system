@@ -29,8 +29,8 @@ cc.Class({
       // ✅ 현재 씬에서 모든 노드 가져오기
       let scene = cc.director.getScene();
       let inventoryNodes = findInventoryNodes(scene);
-      dlog('scene.children. ', scene.children)
-      dlog('inventoryNodes: ', inventoryNodes)
+      cc.log('scene.children. ', scene.children)
+      cc.log('inventoryNodes: ', inventoryNodes)
       inventoryNodes.forEach(inventoryNode => {
         
         let inventory = findValidComponent(inventoryNode, "Inventory"); 
@@ -41,12 +41,12 @@ cc.Class({
             item.node.destroy(); // ✅ 아이템 노드 제거
           });
           inventory.items = [];
-          dlog(`🗑️ 인벤토리 ${inventoryNode.name} 아이템 및 스프라이트 제거 완료!`);
+          cc.log(`🗑️ 인벤토리 ${inventoryNode.name} 아이템 및 스프라이트 제거 완료!`);
         } else {
           console.warn(`⚠️ Inventory 컴포넌트를 찾을 수 없음: ${inventoryNode.name}`);
         }
             
-        dlog('inventory at foreach: ',inventory)
+        cc.log('inventory at foreach: ',inventory)
       });
 
       //  📌 2️⃣  반복문이 끝난 후 실행해야 함
@@ -59,12 +59,12 @@ cc.Class({
         }
       });
 
-      dlog("✅ 모든 인벤토리 아이템이 제거되었습니다!");
+      cc.log("✅ 모든 인벤토리 아이템이 제거되었습니다!");
 
 
        
     } else {
-      dlog('this.inventory: ', this.inventory)
+      cc.log('this.inventory: ', this.inventory)
       addItemToInventory(this.inventory.getComponent("Inventory"));
       //updateInventoryUI(); // ✅ UI 업데이트 실행
 

@@ -8,7 +8,6 @@ export class InventoryManager {
   getClosestInventory(node) {
     let closestInventory = null;
     let minDistance = Infinity;
-    // 가장 가까운 인벤토리 못찾는 이슈
     this.inventories.forEach((inventory) => {
       let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
 let inventoryWorldPos = inventory.convertToWorldSpaceAR(cc.v2(0, 0));

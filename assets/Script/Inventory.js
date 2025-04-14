@@ -36,7 +36,7 @@ export class Inventory extends cc.Component {
         let posX = - (this.node.width / 2) + (itemWidth / 2) + borderPadding + cellSpacing + (x * CELL_SIZE); // ✅ X 위치 보정
         let posY = (this.node.height / 2) - (itemHeight / 2) - borderPadding - cellSpacing - (y * CELL_SIZE); // ✅ Y 위치 보정
     
-        dlog(`🟢 아이템: ${item.name}, X: ${posX}, Y: ${posY}`);
+        cc.log(`🟢 아이템: ${item.name}, X: ${posX}, Y: ${posY}`);
     
     
     

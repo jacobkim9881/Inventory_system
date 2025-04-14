@@ -10,7 +10,8 @@ import { inventoryManager } from "./SceneParser.js";
 import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
 
 
-
+// 아이템을 인벤1, 2에서 다시 1로 옮길 때 가려짐
+// 아이템을 클릭하면 사라짐
 export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
     if (node.zIndex < 999) { // ✅ 이미 높은 zIndex라면 변경하지 않음
@@ -24,52 +25,59 @@ export function enableDrag(node, item, inventory) {
 
   node.on(cc.Node.EventType.TOUCH_END, (event) => {
     const inventories = parseInventories(cc.director.getScene()); // ✅ 씬에서 인벤토리 가져오기
-    dlog('cc.director.getScene(): ', cc.director.getScene())
-    dlog('inventories: ', inventories)
+    cc.log('cc.director.getScene(): ', cc.director.getScene())
+    cc.log('inventories: ', inventories)
     let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기
-    dlog('closestInventory: ', closestInventory)
-    // newX 계산 틀림 이슈
+    cc.log('closestInventory: ', closestInventory)
+
+    let inventoryWorldPos = closestInventory.node.convertToWorldSpaceAR(cc.v2(0, 0));
+cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
+let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
+cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
+
     if (closestInventory) {
-      let startX = closestInventory.node.x - (closestInventory.node.width / 2) + borderPadding; 
-      let startY = closestInventory.node.y + (closestInventory.node.width / 2) - borderPadding;
+      let startX = inventoryWorldPos.x - (closestInventory.node.width / 2); 
+      let startY = inventoryWorldPos.y + (closestInventory.node.width / 2);
 
-      dlog(`startX: ${startX}, closestInventory.x: ${closestInventory.node.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
+      cc.log(`startX: ${startX}, closestInventory.x: ${inventoryWorldPos.x}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
+      cc.log(`startY: ${startY}, closestInventory.y: ${inventoryWorldPos.y}, inventory width: ${closestInventory.node.width}, borderPadding: ${borderPadding}`);
 
-      dlog('node.x - startX: ', node.x - startX)
-      dlog('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
-      let newX = Math.abs(Math.floor((node.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 양수 변환
-      let newY = Math.abs(Math.floor((startY - node.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 양수 변환
-      dlog('newX: ', newX)
-      dlog('newY: ', newY)
-      dlog(' node.x2: ',  node.x)
-      dlog(' node.y2: ',  node.y)
-      dlog('item: ', item)
+      cc.log('nodeWorldPos.x - startX: ', nodeWorldPos.x - startX)
+      cc.log('nodeWorldPos.y - startY: ', nodeWorldPos.y - startY)
+      cc.log('(CELL_SIZE + cellSpacing: ', (CELL_SIZE + cellSpacing))
+      let newX = Math.abs(Math.floor((nodeWorldPos.x - startX) / (CELL_SIZE + cellSpacing))); // ✅ x 좌표 양수 변환
+      let newY = Math.abs(Math.floor((startY - nodeWorldPos.y) / (CELL_SIZE + cellSpacing))); // ✅ y 좌표 양수 변환
+      cc.log('newX: ', newX)
+      cc.log('newY: ', newY)
+      cc.log(' nodeWorldPos.x2: ',  nodeWorldPos.x)
+      cc.log(' nodeWorldPos.y2: ',  nodeWorldPos.y)
+      cc.log('item: ', item)
 
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
         if (item.x === newX && item.y === newY && inventory._id === closestInventory._id) { 
-          dlog("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+          cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
           return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
         }
         item.x = newX;
         item.y = newY;
-        dlog('item: ', item)
-        dlog('inventory: ', inventory)
+        cc.log('item: ', item)
+        cc.log('inventory: ', inventory)
         // ✅ 새로운 인벤토리로 부모 변경
-        dlog('(inventory !== closestInventory): ', (inventory !== closestInventory))
-        dlog('inventory: ', inventory)
-        dlog('closestInventory: ', closestInventory)
+        cc.log('(inventory !== closestInventory): ', (inventory !== closestInventory))
+        cc.log('inventory: ', inventory)
+        cc.log('closestInventory: ', closestInventory)
               
         if (inventory !== closestInventory) {
-          dlog('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
+          cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
           if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
             inventory.removeItem(item); // 기존 인벤토리에서 제거
             closestInventory.addItem(item); // 새로운 인벤토리에 추가
-            dlog("✅ 아이템 이동 완료");
+            cc.log("✅ 아이템 이동 완료");
           } else {
-            dlog("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
+            cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
           }
-          dlog('inventory: ', inventory)
-          dlog('closestInventory: ', closestInventory)
+          cc.log('inventory: ', inventory)
+          cc.log('closestInventory: ', closestInventory)
                 
           //closestInventory.node.addChild(item.node);
           //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
@@ -102,6 +110,6 @@ export function enableDrag(node, item, inventory) {
  * 아이템이 겹치는 가장 가까운 인벤토리 찾기
  */
 function getClosestInventory(node) {
-  dlog('inventoryManager: ', inventoryManager)
+  cc.log('inventoryManager: ', inventoryManager)
   return inventoryManager.getClosestInventory(node); // ✅ 인벤토리 관리 클래스를 활용하여 찾기
 }

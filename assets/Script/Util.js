@@ -14,13 +14,13 @@ export function findInventoryComponent(node) {
 
 export function getInventory(node) {
     let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
-    dlog('inventoryComponent: ', inventoryComponent)
+    cc.log('inventoryComponent: ', inventoryComponent)
     let cleanName = ""; 
     let inventory = null;
 
     if (inventoryComponent) {
         cleanName = sanitizeInventoryName(inventoryComponent.name); // ✅ 이름 정리
-        dlog(`🟢 수정된 인벤토리 컴포넌트 이름: ${cleanName}`);
+        cc.log(`🟢 수정된 인벤토리 컴포넌트 이름: ${cleanName}`);
     }
 
     inventory = node.getComponent(cleanName); // ✅ 인벤토리 반환
