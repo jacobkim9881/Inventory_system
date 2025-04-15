@@ -69,8 +69,8 @@ cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos
       cc.log('item: ', item)
 
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
-        if (item.x === newX && item.y === newY && inventory._id === closestInventory._id) { 
-          cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+          if (item.x === newX && item.y === newY && item.inventoryName === closestInventory.name) {
+        cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
           return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
         }
         item.x = newX;
