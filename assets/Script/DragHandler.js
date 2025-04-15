@@ -82,10 +82,10 @@ cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos
         cc.log('inventory: ', inventory)
         cc.log('closestInventory: ', closestInventory)
 
-        const inventoryName = getInventoryComponentName(closestInventory.node);
-console.log("정리된 인벤토리 이름:", inventoryName);
+        const closestInventoryName = getInventoryComponentName(closestInventory.node);
+console.log("정리된 가장 가까운 인벤토리 이름:", closestInventoryName);
               
-        if (item.inventoryName !== closestInventory.name) {
+        if (item.inventoryName !== closestInventoryName) {
           cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
           if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
             inventory.removeItem(item); // 기존 인벤토리에서 제거
