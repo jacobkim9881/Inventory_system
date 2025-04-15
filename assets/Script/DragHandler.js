@@ -4,7 +4,7 @@
  */
 
 import { parseInventories } from "./SceneParser.js";
-import { isValidPosition, isOccupied, sanitizeInventoryName, getInventoryComponentName} from "./Util.js";
+import { isValidPosition, isOccupied, sanitizeInventoryName, getInventoryComponentName, findValidComponent} from "./Util.js";
 import { updateUI } from "./UIManager.js";
 import { inventoryManager } from "./SceneParser.js";
 import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
@@ -15,23 +15,23 @@ import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
 export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
     cc.log('!!!.........item: ', item)
-      // 최초 터치 무브 시 원래 인덱스를 저장
-      if (inventory.originalIndex < 999) {
-    inventory.originalZIndex = 0; // 원래 zIndex 저장
+    // 최초 터치 무브 시 원래 인덱스를 저장
+    if (inventory.originalIndex < 999) {
+      inventory.originalZIndex = 0; // 원래 zIndex 저장
     
-    dlog('inventory.originalZIndex: ', inventory.originalZIndex)
-    dlog('inventory: ', inventory)
-      }
+      dlog('inventory.originalZIndex: ', inventory.originalZIndex)
+      dlog('inventory: ', inventory)
+    }
       
     if (node.zIndex < 999) { // ✅ 이미 높은 zIndex라면 변경하지 않음
       node.zIndex = 999;       
       node.parent.zIndex = 99; // ✅ 부모 노드의 `zIndex` 높이기
     }
 
-      // 최초 터치 무브 시 item.inventory를 생성하고 인벤토리 이름 저장
-      if (!item.inventoryName) {
-          item.inventoryName = sanitizeInventoryName(inventory.name, "<Inventory>"); // 인벤토리의 이름 저장
-      }
+    // 최초 터치 무브 시 item.inventory를 생성하고 인벤토리 이름 저장
+    if (!item.inventoryName) {
+      item.inventoryName = sanitizeInventoryName(inventory.name, "<Inventory>"); // 인벤토리의 이름 저장
+    }
   
     let delta = event.touch.getDelta();
     node.x += delta.x;
@@ -46,9 +46,9 @@ export function enableDrag(node, item, inventory) {
     cc.log('closestInventory: ', closestInventory)
 
     let inventoryWorldPos = closestInventory.node.convertToWorldSpaceAR(cc.v2(0, 0));
-cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
-let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
-cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
+    cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
+    let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
+    cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
 
     if (closestInventory) {
       let startX = inventoryWorldPos.x - (closestInventory.node.width / 2); 
@@ -67,29 +67,29 @@ cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos
       cc.log(' nodeWorldPos.x2: ',  nodeWorldPos.x)
       cc.log(' nodeWorldPos.y2: ',  nodeWorldPos.y)
       cc.log('item: ', item)
-
+      
       if (isValidPosition(newX, newY) && !isOccupied(newX, newY, closestInventory)) {
-          if (item.x === newX && item.y === newY && item.inventoryName === closestInventory.name) {
-        cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
+        if (item.x === newX && item.y === newY && item.inventoryName === closestInventory.name) {
+          cc.log("⚠️ 같은 인벤토리 내에서 위치 변경 없음, 이동 작업을 수행하지 않음");
           return; // ✅ 같은 인벤토리 내 동일한 위치면 종료
         }
         item.x = newX;
         item.y = newY;
         cc.log('item: ', item)
-        cc.log('inventory: ', inventory)
         // ✅ 새로운 인벤토리로 부모 변경
         cc.log('(inventory !== closestInventory): ', (item.inventoryName !== closestInventory.name))
         cc.log('inventory: ', inventory)
         cc.log('closestInventory: ', closestInventory)
 
         const closestInventoryName = getInventoryComponentName(closestInventory.node);
-console.log("정리된 가장 가까운 인벤토리 이름:", closestInventoryName);
+        console.log("정리된 가장 가까운 인벤토리 이름:", closestInventoryName);
               
         if (item.inventoryName !== closestInventoryName) {
           cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
           if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
+            const item2 = findValidComponent(closestInventory, "Inventory", "Sprite").items.some(i => i === item);
             inventory.removeItem(item); // 기존 인벤토리에서 제거
-            closestInventory.addItem(item); // 새로운 인벤토리에 추가
+            closestInventory.addItem(item, itme2); // 새로운 인벤토리에 추가
             cc.log("✅ 아이템 이동 완료");
           } else {
             cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
@@ -98,12 +98,12 @@ console.log("정리된 가장 가까운 인벤토리 이름:", closestInventoryN
           cc.log('closestInventory: ', closestInventory)
           
           
-    dlog('....inventory.originalZIndex: ', inventory.originalZIndex)
-    dlog('......inventory: ', inventory)
-    item.inventoryName = sanitizeInventoryName(closestInventory.name, "<Inventory>"); // 인벤토리의 이름 저장
+          dlog('....inventory.originalZIndex: ', inventory.originalZIndex)
+          dlog('......inventory: ', inventory)
+          item.inventoryName = sanitizeInventoryName(closestInventory.name, "<Inventory>"); // 인벤토리의 이름 저장
           inventory.zIndex = inventory.originalZIndex; // 원래 zIndex 복귀
                 
-      cc.log('.........item: ', item)
+          cc.log('.........item: ', item)
           //closestInventory.node.addChild(item.node);
           //closestInventory.node.setPosition(closestInventory.getGridPosition(item.x, item.y));
           //item.inventory = closestInventory; // 부모 인벤토리 변경
@@ -117,6 +117,8 @@ console.log("정리된 가장 가까운 인벤토리 이름:", closestInventoryN
 
         updateUI(inventory);
         updateUI(closestInventory);
+      } else if(isValidPosition(newX, newY) && isOccupied(newX, newY, closestInventory)) {
+        cc.log('아무것도 하지 않음.')
       } else {
         node.destroy(); // 인벤토리 밖이면 제거
       }
