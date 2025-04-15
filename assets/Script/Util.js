@@ -4,13 +4,6 @@
  */
 
 /* Not used
-export function sanitizeInventoryName(componentName) {
-    return componentName.replace("<Sprite>", ""); // ✅ "<Sprite>" 부분 제거
-}
-
-export function findInventoryComponent(node) {
-    return node._components.find(comp => comp.name.includes("Inventory"));
-}
 
 export function getInventory(node) {
     let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
@@ -54,8 +47,32 @@ export function findInventoryNodes(node) {
   return inventoryNodes;
 }
 
-
+/*
 export function findValidComponent(node, keyword) {
   return node._components.find(comp => comp.name.includes(keyword) && !comp.name.includes("<Sprite>"));
 }
+*/
+export function findValidComponent(node, keyword, excludeComponent) {
+  return node._components.find(comp => 
+    comp.name.includes(keyword) && !comp.name.includes(`<${excludeComponent}>`)
+  );
+}
 
+export function sanitizeInventoryName(componentName, excludeComponent) {
+  return componentName.replace(excludeComponent, ""); // ✅ "<Sprite>" 부분 제거
+}
+
+
+export function findInventoryComponent(node) {
+    if (!node || !node._components) {
+        console.error("유효하지 않은 노드입니다.");
+        return null;
+    }
+  return node._components.find(comp => comp.name.includes("Inventory"));
+}
+
+export function getInventoryComponentName(node, excludeComponent = "<Sprite>") {
+  const inventoryComponent = findInventoryComponent(node);
+  
+  return inventoryComponent ? sanitizeInventoryName(inventoryComponent.name, excludeComponent) : null;
+}

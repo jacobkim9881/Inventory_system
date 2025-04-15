@@ -32,7 +32,7 @@ cc.log(`📏 거리 계산: X=${distX}, Y=${distY}`);
       }
     });
     if (closestInventory) {
-      let inventoryComponent = findValidComponent(closestInventory, "Inventory"); // ✅ Util.js 함수 사용
+      let inventoryComponent = findValidComponent(closestInventory, "Inventory", "Sprite"); // ✅ Util.js 함수 사용
             
       if (inventoryComponent) {
         cc.log(`✅ 가장 가까운 인벤토리 찾음: ${closestInventory.name}`);

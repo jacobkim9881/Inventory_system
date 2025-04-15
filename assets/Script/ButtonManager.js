@@ -33,7 +33,7 @@ cc.Class({
       cc.log('inventoryNodes: ', inventoryNodes)
       inventoryNodes.forEach(inventoryNode => {
         
-        let inventory = findValidComponent(inventoryNode, "Inventory"); 
+        let inventory = findValidComponent(inventoryNode, "Inventory", "Sprite"); 
 
         if (inventory) {
           inventory.items.forEach(item => {
@@ -53,7 +53,7 @@ cc.Class({
       //✔️ 루프 내부에서 실행하면, 아이템이 완전히 제거되기 전에 UI가 업데이트될 수 있
 
       inventoryNodes.forEach(inventoryNode => {
-        let inventory = findValidComponent(inventoryNode, "Inventory"); 
+        let inventory = findValidComponent(inventoryNode, "Inventory", "Sprite"); 
         if (inventory) {
           updateUI(inventory); // ✅ 루프 종료 후 UI 업데이트
         }
