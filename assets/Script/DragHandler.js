@@ -125,7 +125,9 @@ console.log("정리된 인벤토리 이름:", inventoryName);
 
     node.zIndex = 1; // ✅ 터치가 끝나면 원래 `zIndex` 값으로 복구
     if (node.parent) {
-      node.parent.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
+      dlog('node.parent: ', node.parent)
+      dlog('node.parent.zIndex: ', node.parent.zIndex)
+      inventory.node.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
     }
   });
 }
