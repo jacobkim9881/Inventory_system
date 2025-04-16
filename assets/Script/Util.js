@@ -7,6 +7,8 @@
 
 */
 
+import { inventoryManager } from "./SceneParser.js";
+
 export function loadJSONData(path, callback) {
   cc.resources.load(path, cc.JsonAsset, (err, jsonAsset) => {
       if (err) {
@@ -92,4 +94,14 @@ export function getInventory(node) {
 
   inventory = node.getComponent(cleanName); // ✅ 인벤토리 반환
   return inventory;
+}
+
+
+export function getClosestInventory(node) {
+    if (!inventoryManager) {
+        console.error("❌ inventoryManager가 초기화되지 않음");
+        return null;
+    }
+
+    return inventoryManager.getClosestInventory(node); // ✅ 노드만 전달하여 검색
 }

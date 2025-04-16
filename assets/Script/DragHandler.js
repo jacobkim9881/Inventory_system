@@ -8,7 +8,7 @@ import { isValidPosition, isOccupied, sanitizeInventoryName, getInventoryCompone
 import { updateUI } from "./UIManager.js";
 import { inventoryManager } from "./SceneParser.js";
 import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
-
+import { getClosestInventory } from "./Util.js";
 
 // 아이템을 인벤1, 2에서 다시 1로 옮길 때 가려짐
 // 아이템을 클릭하면 사라짐
@@ -132,13 +132,4 @@ export function enableDrag(node, item, inventory) {
       inventory.node.zIndex = 0; // ✅ 부모 노드도 원래 값으로 복구
     }
   });
-}
-
-
-/**
- * 아이템이 겹치는 가장 가까운 인벤토리 찾기
- */
-function getClosestInventory(node) {
-  cc.log('inventoryManager: ', inventoryManager)
-  return inventoryManager.getClosestInventory(node); // ✅ 인벤토리 관리 클래스를 활용하여 찾기
 }
