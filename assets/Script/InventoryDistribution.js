@@ -1,4 +1,4 @@
-import { isValidPosition, isOccupied } from "./PositionValidator.js";
+import { isValidPosition, isOccupied } from "./Util.js";
 import { addItemToInventory } from "./ItemManager.js";
 
 export function distributeItems(inventory1, inventory2, totalSlots, requiredItemACount_Inv1, requiredItemBCount_Inv1, requiredItemACount_Inv2, requiredItemBCount_Inv2) {
@@ -15,23 +15,20 @@ export function distributeItems(inventory1, inventory2, totalSlots, requiredItem
         return;
     }
 
-    for (let i = 0; i < requiredItemACount_Inv1 + requiredItemBCount_Inv1; i++) {
-        let xPos, yPos;
-        do {
-            xPos = Math.floor(Math.random() * totalSlots);
-            yPos = Math.floor(Math.random() * totalSlots);
-        } while (!isValidPosition(xPos, yPos) || isOccupied(xPos, yPos, inventory1));
-
-        addItemToInventory(inventory1, xPos, yPos);
+    function assignItemsToInventory(inventory, itemCount, totalSlots) {
+        cc.log('assignItemsToInventory(inventory: ', inventory) 
+        for (let i = 0; i < itemCount; i++) {
+            let xPos, yPos;
+            do {
+                xPos = Math.floor(Math.random() * totalSlots);
+                yPos = Math.floor(Math.random() * totalSlots);
+            } while (!isValidPosition(xPos, yPos) || isOccupied(xPos, yPos, inventory));
+    
+            addItemToInventory(inventory, xPos, yPos);
+        }
     }
 
-    for (let i = 0; i < requiredItemACount_Inv2 + requiredItemBCount_Inv2; i++) {
-        let xPos, yPos;
-        do {
-            xPos = Math.floor(Math.random() * totalSlots);
-            yPos = Math.floor(Math.random() * totalSlots);
-        } while (!isValidPosition(xPos, yPos) || isOccupied(xPos, yPos, inventory2));
+    assignItemsToInventory(inventory1, requiredItemACount_Inv1 + requiredItemBCount_Inv1, totalSlots);
+assignItemsToInventory(inventory2, requiredItemACount_Inv2 + requiredItemBCount_Inv2, totalSlots);
 
-        addItemToInventory(inventory2, xPos, yPos);
-    }
 }
