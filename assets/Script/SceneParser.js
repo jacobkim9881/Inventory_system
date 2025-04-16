@@ -5,7 +5,7 @@
 import { InventoryManager } from "./InventoryManager.js";
 import { distributeItems } from "./InventoryDistribution.js"; 
 import { mergeConfig, getConfig } from "./Config.js"; 
-import { loadJSONData } from "./Utils.js"; 
+import { getClosestInventory } from "./Util.js";
 
 let inventoryManager = null;
 
@@ -30,16 +30,23 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
           requiredItemBCount_Inv2: config.requiredItemBCount_Inv2,
       });
 
-        // ✅ 씬 로드 후 배분 로직 실행
-        distributeItems(
-            inventories[0],
-            inventories[1],
-            config.TOTAL_SLOTS,
-            config.requiredItemACount_Inv1,
-            config.requiredItemBCount_Inv1,
-            config.requiredItemACount_Inv2,
-            config.requiredItemBCount_Inv2
-        );
+
+let inventory1 = getClosestInventory(inventories[0]); // ✅ 기준 노드 1에서 가까운 인벤토리 가져오기
+let inventory2 = getClosestInventory(inventories[1]); // ✅ 기준 노드 2에서 가까운 인벤토리 가져오기
+
+if (!inventory1 || !inventory2) {
+    console.error("❌ 유효한 인벤토리를 찾지 못했습니다.");
+} else {
+    distributeItems(
+        inventory1,
+        inventory2,
+        config.TOTAL_SLOTS,
+        config.requiredItemACount_Inv1,
+        config.requiredItemBCount_Inv1,
+        config.requiredItemACount_Inv2,
+        config.requiredItemBCount_Inv2
+    );
+}
 
                 // ✅ 인벤토리에서 A와 B 아이템 개수를 추출
                 let actualItemACount_Inv1 = inventories[0].items.filter(item => item.type === "A").length;
