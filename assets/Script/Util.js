@@ -5,22 +5,19 @@
 
 /* Not used
 
-export function getInventory(node) {
-    let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
-    cc.log('inventoryComponent: ', inventoryComponent)
-    let cleanName = ""; 
-    let inventory = null;
-
-    if (inventoryComponent) {
-        cleanName = sanitizeInventoryName(inventoryComponent.name); // ✅ 이름 정리
-        cc.log(`🟢 수정된 인벤토리 컴포넌트 이름: ${cleanName}`);
-    }
-
-    inventory = node.getComponent(cleanName); // ✅ 인벤토리 반환
-    return inventory;
-}
 */
 
+export function loadJSONData(path, callback) {
+  cc.resources.load(path, cc.JsonAsset, (err, jsonAsset) => {
+      if (err) {
+          console.error(`⚠️ JSON 로드 실패: ${path}`, err);
+          callback(null);
+          return;
+      }
+
+      callback(jsonAsset.json);
+  });
+}
 
 export const GRID_SIZE = 3;
 
@@ -64,10 +61,10 @@ export function sanitizeInventoryName(componentName, excludeComponent) {
 
 
 export function findInventoryComponent(node) {
-    if (!node || !node._components) {
-        console.error("유효하지 않은 노드입니다.");
-        return null;
-    }
+  if (!node || !node._components) {
+    console.error("유효하지 않은 노드입니다.");
+    return null;
+  }
   return node._components.find(comp => comp.name.includes("Inventory"));
 }
 
@@ -75,4 +72,20 @@ export function getInventoryComponentName(node, excludeComponent = "<Sprite>") {
   const inventoryComponent = findInventoryComponent(node);
   
   return inventoryComponent ? sanitizeInventoryName(inventoryComponent.name, excludeComponent) : null;
+}
+
+
+export function getInventory(node) {
+  let inventoryComponent = findInventoryComponent(node); // ✅ 인벤토리 컴포넌트 찾기
+  cc.log('inventoryComponent: ', inventoryComponent)
+  let cleanName = ""; 
+  let inventory = null;
+
+  if (inventoryComponent) {
+    cleanName = sanitizeInventoryName(inventoryComponent.name); // ✅ 이름 정리
+    cc.log(`🟢 수정된 인벤토리 컴포넌트 이름: ${cleanName}`);
+  }
+
+  inventory = node.getComponent(cleanName); // ✅ 인벤토리 반환
+  return inventory;
 }
