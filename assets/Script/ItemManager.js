@@ -4,11 +4,16 @@
  */
 
 import { GRID_SIZE, isOccupied, isValidPosition } from "./Util.js";
-export function addItemToInventory(inventory) {
-  let { x, y } = inventory;
+export function addItemToInventory(inventory, xPos = null, yPos = null, value = 0) {
 
-  if (!isOccupied(x, y, inventory)) {
-    let newItem = createItemSprite(x, y);
+  let { x, y } = inventory;
+  // ✅ 기본값 설정: xPos, yPos가 없으면 인벤토리 위치 사용
+  const finalXPos = xPos !== null ? xPos : inventory.x;
+  const finalYPos = yPos !== null ? yPos : inventory.y;
+  const finalValue = value !== null ? value : 0;
+
+  if (xPos && yPos || !isOccupied(x, y, inventory)) {
+    let newItem = createItemSprite(finalXPos, finalYPos, finalValue); // ✅ `value` 반영
     inventory.addItem(newItem);
   } else {
     do {
@@ -28,7 +33,7 @@ export function addItemToInventory(inventory) {
   }
 }
 
-function createItemSprite(x, y) {
+function createItemSprite(x, y, value) {
   let itemNode = new cc.Node("Item");
   let sprite = itemNode.addComponent(cc.Sprite);
 
@@ -38,5 +43,9 @@ function createItemSprite(x, y) {
     }
   });
 
-  return { node: itemNode, x, y };
+  return { node: itemNode,     
+      x,
+      y,
+      value 
+  };
 }
