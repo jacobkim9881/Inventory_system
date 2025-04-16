@@ -26,6 +26,10 @@ export function isValidPosition(x, y) {
 }
 
 export function isOccupied(x, y, inventory) {
+  if (!inventory || !inventory.items) {
+      console.error("❌ inventory 또는 items 속성이 없음", inventory);
+      return false;
+  }
   return inventory.items.some(item => item.x === x && item.y === y);
 }
 
