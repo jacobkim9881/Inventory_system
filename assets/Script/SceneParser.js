@@ -44,15 +44,17 @@ if (!inventory1 || !inventory2) {
         config.requiredItemACount_Inv1,
         config.requiredItemBCount_Inv1,
         config.requiredItemACount_Inv2,
-        config.requiredItemBCount_Inv2
+        config.requiredItemBCount_Inv2,
+        config.valueA,
+        config.valueB
     );
 }
 
                 // ✅ 인벤토리에서 A와 B 아이템 개수를 추출
-                let actualItemACount_Inv1 = inventories[0].items.filter(item => item.type === "A").length;
-                let actualItemBCount_Inv1 = inventories[0].items.filter(item => item.type === "B").length;
-                let actualItemACount_Inv2 = inventories[1].items.filter(item => item.type === "A").length;
-                let actualItemBCount_Inv2 = inventories[1].items.filter(item => item.type === "B").length;
+                let actualItemACount_Inv1 = inventory1.items.filter(item => item.type === "A").length;
+                let actualItemBCount_Inv1 = inventory1.items.filter(item => item.type === "B").length;
+                let actualItemACount_Inv2 = inventory2.items.filter(item => item.type === "A").length;
+                let actualItemBCount_Inv2 = inventory2.items.filter(item => item.type === "B").length;
         
 
                 // ✅ Config.js의 설정을 동적으로 변경하여 A/B 아이템 개수 저장

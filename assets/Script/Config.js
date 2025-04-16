@@ -8,6 +8,13 @@ export const CELL_SIZE = 100; // ✅ 아이템 칸 크기 설정
 export const borderPadding = 10;    // ✅ 인벤토리 테두리 간격
 export const cellSpacing = 10;      // ✅ 칸과 칸 사이의 간격
 export const possibleValues = [4, 9, 16]; // ✅ 제곱근이 자연수인 TOTAL_SLOTS 가능한 값
+// ✅ 소수 값 목록
+const primeValues = [2, 3, 5, 7];
+
+// ✅ 소수 랜덤 선택 함수
+function getRandomPrime() {
+    return primeValues[Math.floor(Math.random() * primeValues.length)];
+}
 
 import { isDevMode, enableDebugLogs } from "../resources/env/SystemConfig.js";
 
@@ -33,12 +40,17 @@ function initializeConfig() {
     const TOTAL_SLOTS = generateTotalSlots();
     const { n, m, o, p } = generateItemCounts(TOTAL_SLOTS);
 
+    const valueA = getRandomPrime(); // ✅ 소수 중 하나 선택
+    const valueB = getRandomPrime(); // ✅ 소수 중 하나 선택
+
     return {
         TOTAL_SLOTS,
         requiredItemACount_Inv1: n,
         requiredItemBCount_Inv1: m,
         requiredItemACount_Inv2: o,
-        requiredItemBCount_Inv2: p
+        requiredItemBCount_Inv2: p,
+        valueA, // ✅ 소수 값 적용
+        valueB  // ✅ 소수 값 적용
     };
 }
 

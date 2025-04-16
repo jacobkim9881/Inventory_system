@@ -1,7 +1,7 @@
 import { isValidPosition, isOccupied } from "./Util.js";
 import { addItemToInventory } from "./ItemManager.js";
 
-export function distributeItems(inventory1, inventory2, totalSlots, requiredItemACount_Inv1, requiredItemBCount_Inv1, requiredItemACount_Inv2, requiredItemBCount_Inv2) {
+export function distributeItems(inventory1, inventory2, totalSlots, requiredItemACount_Inv1, requiredItemBCount_Inv1, requiredItemACount_Inv2, requiredItemBCount_Inv2, valueA, valueB) {
     const y = totalSlots - (requiredItemACount_Inv1 + requiredItemBCount_Inv1);
     const z = totalSlots - (requiredItemACount_Inv2 + requiredItemBCount_Inv2);
 
@@ -15,7 +15,7 @@ export function distributeItems(inventory1, inventory2, totalSlots, requiredItem
         return;
     }
 
-    function assignItemsToInventory(inventory, itemCount, totalSlots) {
+    function assignItemsToInventory(inventory, itemCount, totalSlots, value) {
         cc.log('assignItemsToInventory(inventory: ', inventory) 
         for (let i = 0; i < itemCount; i++) {
             let xPos, yPos;
@@ -24,11 +24,11 @@ export function distributeItems(inventory1, inventory2, totalSlots, requiredItem
                 yPos = Math.floor(Math.random() * totalSlots);
             } while (!isValidPosition(xPos, yPos) || isOccupied(xPos, yPos, inventory));
     
-            addItemToInventory(inventory, xPos, yPos);
+            addItemToInventory(inventory, xPos, yPos, value);
         }
     }
 
-    assignItemsToInventory(inventory1, requiredItemACount_Inv1 + requiredItemBCount_Inv1, totalSlots);
-assignItemsToInventory(inventory2, requiredItemACount_Inv2 + requiredItemBCount_Inv2, totalSlots);
+    assignItemsToInventory(inventory1, requiredItemACount_Inv1 + requiredItemBCount_Inv1, totalSlots, valueA);
+assignItemsToInventory(inventory2, requiredItemACount_Inv2 + requiredItemBCount_Inv2, totalSlots, valueB);
 
 }
