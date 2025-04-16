@@ -10,21 +10,21 @@ export class InventoryManager {
     let minDistance = Infinity;
     this.inventories.forEach((inventory) => {
       let nodeWorldPos = node.convertToWorldSpaceAR(cc.v2(0, 0));
-let inventoryWorldPos = inventory.convertToWorldSpaceAR(cc.v2(0, 0));
+      let inventoryWorldPos = inventory.convertToWorldSpaceAR(cc.v2(0, 0));
 
-let distX = Math.abs(nodeWorldPos.x - inventoryWorldPos.x);
-let distY = Math.abs(nodeWorldPos.y - inventoryWorldPos.y);
+      let distX = Math.abs(nodeWorldPos.x - inventoryWorldPos.x);
+      let distY = Math.abs(nodeWorldPos.y - inventoryWorldPos.y);
 
-let distance = Math.sqrt(distX ** 2 + distY ** 2);
+      let distance = Math.sqrt(distX ** 2 + distY ** 2);
       cc .log('inventory: ', inventory)
       
       //cc.log(`노드 위치: (${node.x}, ${node.y})`);
       //cc.log(`인벤토리 위치: (${inventory.x}, ${inventory.y})`);
 
-cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
-cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
+      cc.log(`📍 closestInventory의 월드 좌표: X=${inventoryWorldPos.x}, Y=${inventoryWorldPos.y}`);
+      cc.log(`📍 일반 node의 월드 좌표: X=${nodeWorldPos.x}, Y=${nodeWorldPos.y}`);
 
-cc.log(`📏 거리 계산: X=${distX}, Y=${distY}`);
+      cc.log(`📏 거리 계산: X=${distX}, Y=${distY}`);
       cc.log('distance: ', distance)
       if (distance < minDistance) {
         minDistance = distance;
