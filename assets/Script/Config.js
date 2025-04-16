@@ -9,7 +9,7 @@ export const borderPadding = 10;    // ✅ 인벤토리 테두리 간격
 export const cellSpacing = 10;      // ✅ 칸과 칸 사이의 간격
 export const possibleValues = [4, 9, 16]; // ✅ 제곱근이 자연수인 TOTAL_SLOTS 가능한 값
 
-import { getSystemConfig } from "../resources/env/SystemConfig.js";
+import { isDevMode, enableDebugLogs } from "../resources/env/SystemConfig.js";
 
 // ✅ TOTAL_SLOTS 랜덤 생성 함수
 function generateTotalSlots() {
@@ -45,7 +45,9 @@ function initializeConfig() {
 // ✅ 설정 객체 선언 (초기화 + 시스템 설정 포함)
 let config = {
     ...initializeConfig(),
-    systemConfig: getSystemConfig() // ✅ SystemConfig에서 환경 설정 가져오기
+    systemConfig: {
+        isDevMode, enableDebugLogs
+    } // ✅ SystemConfig에서 환경 설정 가져오기
 };
 
 export function setConfig(newConfig) {
