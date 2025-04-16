@@ -1,0 +1,57 @@
+{
+    "file": "InventoryDistribution.js",
+    "description": "인벤토리 시스템에서 아이템 배분 로직을 구현하는 메타데이터",
+    "metadata": {
+        "language": "JavaScript",
+        "framework": "Cocos Creator JS",
+        "concepts": [
+            "인벤토리 칸 수 제한",
+            "아이템 배분 최적화",
+            "방정식을 통한 조건 검증"
+        ]
+    },
+    "environment_variables": {
+        "TOTAL_SLOTS": {
+            "type": "Number",
+            "description": "각 인벤토리의 총 슬롯 개수"
+        },
+        "remainingSlots_Inv1": {
+            "type": "Number",
+            "description": "인벤토리1의 남은 슬롯 개수"
+        },
+        "remainingSlots_Inv2": {
+            "type": "Number",
+            "description": "인벤토리2의 남은 슬롯 개수"
+        },
+        "requiredItemACount_Inv1": {
+            "type": "Number",
+            "description": "인벤토리1에 필요한 A 아이템 개수"
+        },
+        "requiredItemBCount_Inv1": {
+            "type": "Number",
+            "description": "인벤토리1에 필요한 B 아이템 개수"
+        },
+        "requiredItemACount_Inv2": {
+            "type": "Number",
+            "description": "인벤토리2에 필요한 A 아이템 개수"
+        },
+        "requiredItemBCount_Inv2": {
+            "type": "Number",
+            "description": "인벤토리2에 필요한 B 아이템 개수"
+        }
+    },
+    "conditions": {
+        "equations": [
+            "2 * TOTAL_SLOTS - (requiredItemACount_Inv1 + requiredItemBCount_Inv1 + requiredItemACount_Inv2 + requiredItemBCount_Inv2) = remainingSlots_Inv1 + remainingSlots_Inv2",
+            "remainingSlots_Inv1 ≠ 0",
+            "remainingSlots_Inv2 ≠ 0",
+            "|requiredItemACount_Inv1 - actualItemACount_Inv1| + |requiredItemBCount_Inv1 - actualItemBCount_Inv1| ≤ remainingSlots_Inv2",
+            "remainingSlots_Inv2 < TOTAL_SLOTS",
+            "requiredItemACount_Inv1 + requiredItemBCount_Inv1 + remainingSlots_Inv1 = TOTAL_SLOTS",
+            "requiredItemACount_Inv2 + requiredItemBCount_Inv2 + remainingSlots_Inv2 = TOTAL_SLOTS",
+            "remainingSlots_Inv1 = TOTAL_SLOTS - (requiredItemACount_Inv1 + requiredItemBCount_Inv1)",
+            "actualItemACount_Inv1 + actualItemBCount_Inv1 + actualItemACount_Inv2 + actualItemBCount_Inv2 = requiredItemACount_Inv1 + requiredItemBCount_Inv1 + requiredItemACount_Inv2 + requiredItemBCount_Inv2",
+            "TOTAL_SLOTS의 제곱근은 자연수"
+        ]
+    }
+}
