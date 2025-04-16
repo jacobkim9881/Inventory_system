@@ -21,20 +21,6 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
 
     cc.log("✅ inventoryManager 생성 완료:", inventoryManager);
 
-    // ✅ JSON에서 기본 설정 불러오기
-    loadJSONData("data/inventory_distribution_metadata", (metadata) => {
-        if (!metadata) {
-            console.error("⚠️ JSON 로드 실패");
-            return;
-        }
-
-        cc.log("✅ JSON 설정 적용:", metadata);
-
-        // ✅ 인벤토리에서 A와 B 아이템 개수를 추출
-        let actualItemACount_Inv1 = inventories[0].items.filter(item => item.type === "A").length;
-        let actualItemBCount_Inv1 = inventories[0].items.filter(item => item.type === "B").length;
-        let actualItemACount_Inv2 = inventories[1].items.filter(item => item.type === "A").length;
-        let actualItemBCount_Inv2 = inventories[1].items.filter(item => item.type === "B").length;
 
         mergeConfig({
           TOTAL_SLOTS: config.TOTAL_SLOTS, // ✅ 기존 설정 유지
@@ -48,12 +34,19 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
         distributeItems(
             inventories[0],
             inventories[1],
-            metadata.environment_variables.TOTAL_SLOTS,
-            metadata.environment_variables.requiredItemACount_Inv1,
-            metadata.environment_variables.requiredItemBCount_Inv1,
-            metadata.environment_variables.requiredItemACount_Inv2,
-            metadata.environment_variables.requiredItemBCount_Inv2
+            config.TOTAL_SLOTS,
+            config.requiredItemACount_Inv1,
+            config.requiredItemBCount_Inv1,
+            config.requiredItemACount_Inv2,
+            config.requiredItemBCount_Inv2
         );
+
+                // ✅ 인벤토리에서 A와 B 아이템 개수를 추출
+                let actualItemACount_Inv1 = inventories[0].items.filter(item => item.type === "A").length;
+                let actualItemBCount_Inv1 = inventories[0].items.filter(item => item.type === "B").length;
+                let actualItemACount_Inv2 = inventories[1].items.filter(item => item.type === "A").length;
+                let actualItemBCount_Inv2 = inventories[1].items.filter(item => item.type === "B").length;
+        
 
                 // ✅ Config.js의 설정을 동적으로 변경하여 A/B 아이템 개수 저장
                 mergeConfig({
@@ -62,7 +55,7 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
                   actualItemACount_Inv2: actualItemACount_Inv2,
                   actualItemBCount_Inv2: actualItemBCount_Inv2
               });
-    });
+              cc.log('config: ', config)
 });
 
 export { inventoryManager }; // ✅ 모듈 최상단에서만 export 가능
