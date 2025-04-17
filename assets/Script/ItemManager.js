@@ -2,8 +2,8 @@
  * ItemManager.js - 아이템 추가 및 배치 로직
  * 버튼 클릭 시 새로운 아이템을 생성하여 인벤토리에 배치하는 기능
  */
-
-import { GRID_SIZE, isOccupied, isValidPosition } from "./Util.js";
+import { getConfig } from "./Config.js";
+import { isOccupied, isValidPosition } from "./Util.js";
 export function addItemToInventory(inventory, xPos = null, yPos = null, value = 0) {
 
   let { x, y } = inventory;
@@ -11,6 +11,8 @@ export function addItemToInventory(inventory, xPos = null, yPos = null, value = 
   const finalXPos = xPos !== null ? xPos : inventory.x;
   const finalYPos = yPos !== null ? yPos : inventory.y;
   const finalValue = value !== null ? value : 0;
+
+  const GRID_SIZE = getConfig().GRID_SIZE; // ✅ 그리드 크기 설정
 
   if (xPos && yPos || !isOccupied(x, y, inventory)) {
     let newItem = createItemSprite(finalXPos, finalYPos, finalValue); // ✅ `value` 반영
