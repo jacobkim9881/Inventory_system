@@ -13,7 +13,7 @@ class Game {
         this.currentTurn = this.currentTurn === "Player" ? "Computer" : "Player";
     }
 
-    async playTurn(index) {
+    playTurn(index) {
         let selectedInventory = this.currentTurn === "Player" ? this.playerInventory : this.computerInventory;
     
         if (this.previousMove.player === "O") {
@@ -21,10 +21,11 @@ class Game {
             console.log("🔄 이전 턴 기록을 초기화합니다.");
             this.previousMove = { player: null, computer: null };
     
-            let exchangeCompleted = await this.promptExchange(); // 🔥 비동기 처리
+            let exchangeCompleted = this.promptExchange();
             if (exchangeCompleted) {
                 return 10; // 🔥 교환이 완료되면 1 반환
             }
+            return 10;
         } else {
             let result = selectedInventory.chooseSlot(index);
             if (result === false) return 0; // 🔥 선택이 실패하면 0 반환

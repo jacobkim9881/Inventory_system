@@ -18,7 +18,12 @@ function askPlayerMove() {
             askPlayerMove();
         } else {
             let completed = game.playTurn(index - 1); // 🔥 playTurn 실행 후 반환값 활용            
-            if (completed) {
+            if (completed === 10) {
+
+            } else if(completed) {
+
+                
+                console.log('setTimeout')
                 setTimeout(computerMove, 1000); // 🔥 모든 실행이 끝난 후에만 다음 턴 진행
             } else {
                 askPlayerMove(); // 🔥 선택이 잘못되었을 경우 다시 입력 요청
