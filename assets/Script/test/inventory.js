@@ -5,14 +5,54 @@ class Inventory {
         this.name = name;
         this.grid = Array(Config.totalSlots).fill(" "); // 9칸짜리 빈 공간
         this.hiddenGrid = Array(Config.totalSlots).fill("*");  // 🔥 모든 칸을 `*`로 가려둠
-        this.itemA = Config.requiredItemA;
-        this.itemB = Config.requiredItemB;
         this.previousO = null;
         
+        let distributeItems = this.generateValidItems(Config.totalSlots); // 🔥 총 슬롯 수에 따라 필요한 아이템 개수 계산
 
+        this.itemA = distributeItems.requiredItemA; // 🔥 A 아이템 개수
+        //Math.floor(Math.random() * (9 / 2)) + 1;
+        this.itemB = distributeItems.requiredItemB; // 🔥 B 아이템 개수
 
         // 초기 숫자 배치
         this.populateBoard();
+    }
+    
+    generateValidItems(totalSlots) {
+        let x = totalSlots;
+        
+        // ✅ x의 제곱근이 자연수여야 함
+        if (Math.sqrt(x) % 1 !== 0) {
+            throw new Error("🚨 오류: x의 제곱근이 자연수가 아닙니다!");
+        }
+    
+        let valid = false;
+        let requiredA, requiredB;
+    
+        while (!valid) {
+            // ✅ 임의의 초기값 설정
+            const maxValue = Math.floor(x / 2); // 최대값은 x의 절반
+            let n = Math.floor(Math.random() * (x / 2)) + 1;
+            let m = Math.floor(Math.random() * (x / 2)) + 1;
+            let o = Math.floor(Math.random() * (x / 2)) + 1;
+            let p = Math.floor(Math.random() * (x / 2)) + 1;
+    
+            // ✅ y, z 계산
+            let y = x - (n + m);
+            let z = 2 * x - (n + m + o + p) - y;
+    
+            // ✅ 조건 검증
+            if (y > 0 && z > 0 && z < x) {
+                requiredA = n;
+                requiredB = m;
+
+                if (n >= maxValue || m >= maxValue || o >= maxValue || p >= maxValue) {
+                } else {
+                valid = true; // ✅ 조건 만족 → 반복 종료
+                }
+            }
+        }
+    
+        return { requiredItemA: requiredA, requiredItemB: requiredB };
     }
 
     populateBoard() {
