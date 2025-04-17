@@ -20,7 +20,7 @@ export function loadJSONData(path, callback) {
       callback(jsonAsset.json);
   });
 }
-
+//config에서 토탈벨류 근거해서 
 export const GRID_SIZE = 3;
 
 export function isValidPosition(x, y) {

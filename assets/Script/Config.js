@@ -42,9 +42,13 @@ function initializeConfig() {
 
     const valueA = getRandomPrime(); // ✅ 소수 중 하나 선택
     const valueB = getRandomPrime(); // ✅ 소수 중 하나 선택
+// ✅ GRID_SIZE 계산 (제곱근이 자연수인지 확인)
+const sqrtSlots = Math.sqrt(TOTAL_SLOTS);
+const GRID_SIZE = Number.isInteger(sqrtSlots) ? sqrtSlots : 3; // ✅ 자연수면 그대로, 아니면 3
 
     return {
         TOTAL_SLOTS,
+        GRID_SIZE,
         requiredItemACount_Inv1: n,
         requiredItemBCount_Inv1: m,
         requiredItemACount_Inv2: o,
