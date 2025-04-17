@@ -1,5 +1,7 @@
 const Inventory = require("./inventory.js");
 const rl = require("./inputHandler"); // ✅ 중앙 관리되는 rl 사용
+const { computerMove, askPlayerMove } = require("./moveHandler");
+const { cancelTimeout } = require("./timeoutManager");
 
 class Game {
     constructor() {
@@ -72,8 +74,13 @@ class Game {
                         this.playTurn(myIndex);
                     }
 
-                    rl.close();
                     this.switchTurn();
+                    // ✅ `cancelTimeout()`을 적절한 순간에 호출하여 타이머 종료 가능
+
+//console.log("🔎 computerMove 확인:", computerMove); // ✅ 여기서 실행해보기!
+console.log("askPlayerMove 확인:", askPlayerMove); // ✅ 여기서 실행해보기!
+cancelTimeout();
+computerMove(this, askPlayerMove);
                 });
             });
         } else {
@@ -85,6 +92,9 @@ class Game {
 
             this.handleExchange(myIndex, enemyIndex);
             this.switchTurn();
+            // ✅ `cancelTimeout()`을 적절한 순간에 호출하여 타이머 종료 가능
+cancelTimeout();
+computerMove(this, askPlayerMove);
         }
     }
 
