@@ -17,8 +17,7 @@ function askPlayerMove() {
             console.log("⚠️ 1~9 사이의 번호를 입력하세요!");
             askPlayerMove();
         } else {
-            let completed = game.playTurn(index - 1); // 🔥 playTurn 실행 후 반환값 활용
-
+            let completed = game.playTurn(index - 1); // 🔥 playTurn 실행 후 반환값 활용            
             if (completed) {
                 setTimeout(computerMove, 1000); // 🔥 모든 실행이 끝난 후에만 다음 턴 진행
             } else {
@@ -33,7 +32,7 @@ function computerMove() {
     do {
         index = Math.floor(Math.random() * 9);
         attempts++;
-        if (attempts > 3) {
+        if (attempts > 100) {
             console.log("⚠️ 컴퓨터가 선택할 수 없는 상태! 턴을 넘깁니다.");
             game.switchTurn();
             askPlayerMove();
