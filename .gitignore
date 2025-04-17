@@ -53,3 +53,9 @@ Thumbs.db
 .vscode/
 
 ../
+
+
+#//////////////////////////
+# images
+#//////////////////////////
+resources/textures
