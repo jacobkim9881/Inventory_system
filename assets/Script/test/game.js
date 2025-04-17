@@ -46,7 +46,7 @@ class Game {
                 } else {
                     this.switchTurn();
                 }
-                rl.close();
+                //rl.close();
             });
         } else {
             if (Math.random() > 0.5) {
