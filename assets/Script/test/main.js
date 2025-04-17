@@ -8,15 +8,22 @@ const rl = readline.createInterface({
 });
 
 function askPlayerMove() {
-    game.displayGame();
+    game.displayGame(); // 🔥 게임 상태를 먼저 출력
+
     rl.question("🔢 선택할 칸 번호를 입력하세요 (1~9): ", (index) => {
         index = parseInt(index);
+
         if (isNaN(index) || index < 1 || index > 9) {
             console.log("⚠️ 1~9 사이의 번호를 입력하세요!");
             askPlayerMove();
         } else {
-            game.playTurn(index - 1);
-            setTimeout(computerMove, 1000);
+            let completed = game.playTurn(index - 1); // 🔥 playTurn 실행 후 반환값 활용
+
+            if (completed) {
+                setTimeout(computerMove, 1000); // 🔥 모든 실행이 끝난 후에만 다음 턴 진행
+            } else {
+                askPlayerMove(); // 🔥 선택이 잘못되었을 경우 다시 입력 요청
+            }
         }
     });
 }

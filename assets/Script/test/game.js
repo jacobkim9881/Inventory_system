@@ -15,20 +15,24 @@ class Game {
 
     playTurn(index) {
         let selectedInventory = this.currentTurn === "Player" ? this.playerInventory : this.computerInventory;
-
-
+    
         if (this.previousMove.player !== null || this.previousMove.computer !== null) {
             console.log("🔄 이전 턴 기록을 초기화합니다.");
-            this.previousMove = { player: null, computer: null };            
-            this.promptExchange();
+            this.previousMove = { player: null, computer: null };
+    
+            let exchangeCompleted = this.promptExchange();
+            if (exchangeCompleted) {
+                return 1; // 🔥 교환이 완료되면 1 반환
+            }
         } else {
             let result = selectedInventory.chooseSlot(index);
-            if (result === false) return;
+            if (result === false) return 0; // 🔥 선택이 실패하면 0 반환
+    
             this.switchTurn();
         }
-
+    
         this.previousMove[this.currentTurn === "Player" ? "player" : "computer"] = index;
-
+        return 1; // 🔥 정상적으로 턴이 진행되면 1 반환
     }
 
     promptExchange() {
