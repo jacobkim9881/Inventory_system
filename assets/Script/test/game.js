@@ -1,5 +1,5 @@
 const Inventory = require("./inventory.js");
-const readline = require("readline");
+const rl = require("./inputHandler"); // ✅ 중앙 관리되는 rl 사용
 
 class Game {
     constructor() {
@@ -39,10 +39,6 @@ class Game {
 
     promptExchange() {
         if (this.currentTurn === "Player") {
-            const rl = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout
-            });
 
             rl.question("🔄 O을 선택했습니다! 교환하시겠습니까? (Y/N): ", (answer) => {
                 if (answer.toLowerCase() === "y") {

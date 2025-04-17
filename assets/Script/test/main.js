@@ -1,11 +1,7 @@
 const Game = require("./game.js");
-const readline = require("readline");
+const rl = require("./inputHandler"); // ✅ 중앙 관리되는 rl 사용
 
 const game = new Game();
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
 function askPlayerMove() {
     game.displayGame(); // 🔥 게임 상태를 먼저 출력
