@@ -51,6 +51,16 @@ class Inventory {
                 }
             }
 
+            swapSlots(index1, index2) {
+                // 🔄 기본 인벤토리 교환
+                [this.grid[index1], this.grid[index2]] = [this.grid[index2], this.grid[index1]];
+                
+                // 🔥 hiddenGrid 교환 후 즉시 공개
+                [this.hiddenGrid[index1], this.hiddenGrid[index2]] = [this.grid[index1], this.grid[index2]];
+            
+                console.log(`🔄 ${index1}번 슬롯과 ${index2}번 슬롯을 교환 완료!`);
+                console.log(`📢 공개된 값: ${index1} → ${this.hiddenGrid[index1]}, ${index2} → ${this.hiddenGrid[index2]}`);
+            }
 }
 
 module.exports = Inventory;
