@@ -23,7 +23,7 @@ class Game {
             console.log("🔄 이전 턴 기록을 초기화합니다.");
             this.previousMove = { player: null, computer: null };
     
-            let exchangeCompleted = this.promptExchange();
+            let exchangeCompleted = this.promptExchange(index);
             if (exchangeCompleted) {
                 return 10; // 🔥 교환이 완료되면 1 반환
             }
@@ -39,7 +39,7 @@ class Game {
         return 1; // 🔥 정상적으로 턴이 진행되면 1 반환
     }
 
-    promptExchange() {
+    promptExchange(index) {
         if (this.currentTurn === "Player") {
 
             rl.question("🔄 O을 선택했습니다! 교환하시겠습니까? (Y/N): ", (answer) => {
@@ -47,6 +47,10 @@ class Game {
                     this.selectExchangeCards(rl);
                 } else {
                     this.switchTurn();
+                    let result = this.playerInventory.chooseSlot(index);
+            if (result === false) return 0; // 🔥 선택이 실패하면 0 반환
+            this.previousMove[this.currentTurn === "Player" ? "player" : "computer"] = this.playerInventory.hiddenGrid[index];
+                    computerMove(this, askPlayerMove);
                 }
                 //rl.close();
             });
@@ -107,6 +111,8 @@ computerMove(this, askPlayerMove);
     displayGame() {
         console.clear();
         console.log("🎲 현재 게임 상태:");
+console.log("📦1. A 아이템:", this.playerInventory.itemA, "B 아이템:", this.playerInventory.itemB);
+console.log("📦2. A 아이템:", this.computerInventory.itemA, "B 아이템:", this.computerInventory.itemB);
         this.playerInventory.display();
         console.log("\n");
         this.computerInventory.display();
