@@ -1,0 +1,13 @@
+신 로드시 아이템 만들고 분배
+SceneParser -> distributeItems at InventoryDistribution-> addItemToInventory inside at ItemManager
+
+ButtonManager.js
+import { findInventoryNodes, findValidComponent } from "./Util";
+
+      let inventoryNodes = findInventoryNodes(scene);
+      inventoryNodes.forEach(inventoryNode => {
+        let inventory = findValidComponent(inventoryNode, "Inventory", "Sprite"); 
+        if (inventory) {
+          updateUI(inventory); 
+
+updateUI at UIManager -> enableDrag as event at DragHandler-> updateUI -> ...
