@@ -38,13 +38,25 @@ export function addItemToInventory(inventory, xPos = null, yPos = null, value = 
 function createItemSprite(x, y, value) {
   let itemNode = new cc.Node("Item");
   let sprite = itemNode.addComponent(cc.Sprite);
-
+/*
   cc.resources.load("textures/test", cc.SpriteFrame, (err, spriteFrame) => {
     if (!err) {
       sprite.spriteFrame = spriteFrame;
     }
   });
-  
+*/
+ 
+  // ✅ textures/test 폴더 내 모든 이미지 리스트 가져오기
+  cc.resources.loadDir("textures/test", cc.SpriteFrame, (err, images) => {
+      if (!err && images.length > 0) {
+          let randomIndex = Math.floor(Math.random() * images.length); // ✅ 랜덤 인덱스 선택
+          sprite.spriteFrame = images[randomIndex]; // ✅ 랜덤한 스프라이트 적용
+          cc.log("✅ 랜덤 스프라이트 적용 완료!", images[randomIndex]);
+      } else {
+          cc.log("⚠️ 스프라이트 로드 실패 또는 폴더가 비어 있음!");
+      }
+  });
+
   // ✅ 클릭 이벤트 추가: 클릭하면 텍스처 변경
   itemNode.on(cc.Node.EventType.TOUCH_END, () => {
     changeItemTexture(sprite);
