@@ -5,7 +5,8 @@
 import { InventoryManager } from "./InventoryManager.js";
 import { distributeItems } from "./InventoryDistribution.js"; 
 import { mergeConfig, getConfig } from "./Config.js"; 
-import { getClosestInventory, findInventoryNodes } from "./Util.js";
+import { updateUI } from "./UIManager.js";
+import { getClosestInventory, findInventoryNodes, findValidComponent } from "./Util.js";
 
 let inventoryManager = null;
 
@@ -65,24 +66,14 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
     actualItemBCount_Inv2: actualItemBCount_Inv2
   });
   cc.log('config: ', config)
+
+  
+  inventories.forEach(inventoryNode => {
+    let inventory = findValidComponent(inventoryNode, "Inventory", "Sprite"); 
+    if (inventory) {
+      updateUI(inventory); 
+    }
+  })
 });
 
 export { inventoryManager }; // ✅ 모듈 최상단에서만 export 가능
-
-
-export function parseInventories(scene) { 
-  let inventories = [];
-
-  function searchInventoryNodes(node) {
-    if (node.name.includes("Inventory")) { // ✅ "Inventory" 문자열 포함 여부 확인
-      inventories.push(node);
-    }
-
-    node.children.forEach(child => searchInventoryNodes(child)); // ✅ 자식 노드도 검사
-  }
-
-  scene.children.forEach(rootNode => searchInventoryNodes(rootNode)); // ✅ 루트 노드부터 검사
-
-
-  return inventories; // ✅ 모든 인벤토리를 배열로 반환
-}
