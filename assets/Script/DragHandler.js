@@ -14,6 +14,8 @@ import { getClosestInventory } from "./Util.js";
 // 아이템을 클릭하면 사라짐
 export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
+    item.originalX = node.x; // ✅ 원래 위치 초기화
+    item.originalY = node.y; // ✅ 원래 위치 초기화
     cc.log('!!!.........item: ', item)
     // 최초 터치 무브 시 원래 인덱스를 저장
     if (inventory.originalIndex < 999) {
@@ -119,6 +121,9 @@ export function enableDrag(node, item, inventory) {
         updateUI(closestInventory);
       } else if(isValidPosition(newX, newY) && isOccupied(newX, newY, closestInventory)) {
         cc.log('아무것도 하지 않음.')
+        item.node.setPosition(item.originalX, item.originalY); // ✅ 원래 위치로 복구        
+        updateUI(inventory);
+        updateUI(closestInventory);
       } else {
         node.destroy(); // 인벤토리 밖이면 제거
       }
