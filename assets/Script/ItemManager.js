@@ -44,10 +44,24 @@ function createItemSprite(x, y, value) {
       sprite.spriteFrame = spriteFrame;
     }
   });
+  
+  // ✅ 클릭 이벤트 추가: 클릭하면 텍스처 변경
+  itemNode.on(cc.Node.EventType.TOUCH_END, () => {
+    changeItemTexture(sprite);
+});
 
   return { node: itemNode,     
     x,
     y,
     value 
   };
+}
+
+function changeItemTexture(sprite) {
+  cc.resources.load("textures/test2", cc.SpriteFrame, (err, newSpriteFrame) => {
+      if (!err) {
+          sprite.spriteFrame = newSpriteFrame;
+          cc.log("✅ 아이템 텍스처 변경 완료!");
+      }
+  });
 }
