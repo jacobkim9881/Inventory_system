@@ -13,73 +13,73 @@ const primeValues = [2, 3, 5, 7];
 
 // ✅ 소수 랜덤 선택 함수
 function getRandomPrime() {
-    return primeValues[Math.floor(Math.random() * primeValues.length)];
+  return primeValues[Math.floor(Math.random() * primeValues.length)];
 }
 
 import { isDevMode, enableDebugLogs } from "../resources/env/SystemConfig.js";
 
 // ✅ TOTAL_SLOTS 랜덤 생성 함수
 function generateTotalSlots() {
-    return possibleValues[Math.floor(Math.random() * possibleValues.length)];
+  return possibleValues[Math.floor(Math.random() * possibleValues.length)];
 }
 
 // ✅ 조건을 만족하는 n, m, o, p 값 생성
 function generateItemCounts(totalSlots) {
-    const halfSlots = Math.floor(totalSlots / 2);
+  const halfSlots = Math.floor(totalSlots / 2);
 
-    let n = Math.floor(Math.random() * halfSlots) + 1;
-    let m = Math.floor(Math.random() * (halfSlots - n)) + 1;
-    let o = Math.floor(Math.random() * (totalSlots - n - m)) + 1;
-    let p = totalSlots - (n + m + o); // ✅ 남은 슬롯으로 p 설정
+  let n = Math.floor(Math.random() * halfSlots) + 1;
+  let m = Math.floor(Math.random() * (halfSlots - n)) + 1;
+  let o = Math.floor(Math.random() * (totalSlots - n - m)) + 1;
+  let p = totalSlots - (n + m + o); // ✅ 남은 슬롯으로 p 설정
 
-    return { n, m, o, p };
+  return { n, m, o, p };
 }
 
 // ✅ 설정 값을 초기화하는 함수
 function initializeConfig() {
-    const TOTAL_SLOTS = generateTotalSlots();
-    const { n, m, o, p } = generateItemCounts(TOTAL_SLOTS);
+  const TOTAL_SLOTS = generateTotalSlots();
+  const { n, m, o, p } = generateItemCounts(TOTAL_SLOTS);
 
-    const valueA = getRandomPrime(); // ✅ 소수 중 하나 선택
-    const valueB = getRandomPrime(); // ✅ 소수 중 하나 선택
-// ✅ GRID_SIZE 계산 (제곱근이 자연수인지 확인)
-const sqrtSlots = Math.sqrt(TOTAL_SLOTS);
-const GRID_SIZE = Number.isInteger(sqrtSlots) ? sqrtSlots : 3; // ✅ 자연수면 그대로, 아니면 3
+  const valueA = getRandomPrime(); // ✅ 소수 중 하나 선택
+  const valueB = getRandomPrime(); // ✅ 소수 중 하나 선택
+  // ✅ GRID_SIZE 계산 (제곱근이 자연수인지 확인)
+  const sqrtSlots = Math.sqrt(TOTAL_SLOTS);
+  const GRID_SIZE = Number.isInteger(sqrtSlots) ? sqrtSlots : 3; // ✅ 자연수면 그대로, 아니면 3
 
-    return {
-        TOTAL_SLOTS,
-        GRID_SIZE,
-        requiredItemACount_Inv1: n,
-        requiredItemBCount_Inv1: m,
-        requiredItemACount_Inv2: o,
-        requiredItemBCount_Inv2: p,
-        valueA, // ✅ 소수 값 적용
-        valueB  // ✅ 소수 값 적용
-    };
+  return {
+    TOTAL_SLOTS,
+    GRID_SIZE,
+    requiredItemACount_Inv1: n,
+    requiredItemBCount_Inv1: m,
+    requiredItemACount_Inv2: o,
+    requiredItemBCount_Inv2: p,
+    valueA, // ✅ 소수 값 적용
+    valueB  // ✅ 소수 값 적용
+  };
 }
 
 // ✅ 설정 객체 선언 (초기화 + 시스템 설정 포함)
 let config = {
-    ...initializeConfig(),
-    systemConfig: {
-        isDevMode, enableDebugLogs
-    } // ✅ SystemConfig에서 환경 설정 가져오기
+  ...initializeConfig(),
+  systemConfig: {
+    isDevMode, enableDebugLogs
+  } // ✅ SystemConfig에서 환경 설정 가져오기
 };
 
 export function setConfig(newConfig) {
-    Object.assign(config, newConfig);
+  Object.assign(config, newConfig);
 }
 
 export function mergeConfig(newConfig) {
-    for (let key in newConfig) {
-        if (typeof newConfig[key] === "object" && config[key]) {
-            Object.assign(config[key], newConfig[key]); // ✅ 객체 병합
-        } else {
-            config[key] = newConfig[key]; // ✅ 기본 값 업데이트
-        }
+  for (let key in newConfig) {
+    if (typeof newConfig[key] === "object" && config[key]) {
+      Object.assign(config[key], newConfig[key]); // ✅ 객체 병합
+    } else {
+      config[key] = newConfig[key]; // ✅ 기본 값 업데이트
     }
+  }
 }
 
 export function getConfig() {
-    return config;
+  return config;
 }

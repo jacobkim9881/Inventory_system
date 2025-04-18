@@ -46,8 +46,8 @@ function createItemSprite(x, y, value) {
   });
 
   return { node: itemNode,     
-      x,
-      y,
-      value 
+    x,
+    y,
+    value 
   };
 }

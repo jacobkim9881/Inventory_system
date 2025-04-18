@@ -12,13 +12,13 @@ import { getConfig } from "./Config.js";
 
 export function loadJSONData(path, callback) {
   cc.resources.load(path, cc.JsonAsset, (err, jsonAsset) => {
-      if (err) {
-          console.error(`⚠️ JSON 로드 실패: ${path}`, err);
-          callback(null);
-          return;
-      }
+    if (err) {
+      console.error(`⚠️ JSON 로드 실패: ${path}`, err);
+      callback(null);
+      return;
+    }
 
-      callback(jsonAsset.json);
+    callback(jsonAsset.json);
   });
 }
 
@@ -30,8 +30,8 @@ export function isValidPosition(x, y) {
 
 export function isOccupied(x, y, inventory) {
   if (!inventory || !inventory.items) {
-      console.error("❌ inventory 또는 items 속성이 없음", inventory);
-      return false;
+    console.error("❌ inventory 또는 items 속성이 없음", inventory);
+    return false;
   }
   return inventory.items.some(item => item.x === x && item.y === y);
 }
@@ -99,10 +99,10 @@ export function getInventory(node) {
 
 
 export function getClosestInventory(node) {
-    if (!inventoryManager) {
-        console.error("❌ inventoryManager가 초기화되지 않음");
-        return null;
-    }
+  if (!inventoryManager) {
+    console.error("❌ inventoryManager가 초기화되지 않음");
+    return null;
+  }
 
-    return inventoryManager.getClosestInventory(node); // ✅ 노드만 전달하여 검색
+  return inventoryManager.getClosestInventory(node); // ✅ 노드만 전달하여 검색
 }
