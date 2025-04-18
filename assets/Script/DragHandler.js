@@ -14,6 +14,8 @@ import { getClosestInventory } from "./Util.js";
 // 아이템을 클릭하면 사라짐
 export function enableDrag(node, item, inventory) {
   node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
+    
+        //cc.log('아무것도 하지 않을때 저장하는 위치.')
     item.originalX = node.x; // ✅ 원래 위치 초기화
     item.originalY = node.y; // ✅ 원래 위치 초기화
     cc.log('!!!.........item: ', item)
@@ -89,9 +91,9 @@ export function enableDrag(node, item, inventory) {
         if (item.inventoryName !== closestInventoryName) {
           cc.log('(!closestInventory.hasItem(item)): ', (!closestInventory.hasItem(item)))
           if (!closestInventory.hasItem(item)) { // ✅ 이미 추가된 아이템인지 확인                        
-            const item2 = findValidComponent(closestInventory, "Inventory", "Sprite").items.some(i => i === item);
+            // const item2 = findValidComponent(closestInventory, "Inventory", "Sprite").items.some(i => i === item);
             inventory.removeItem(item); // 기존 인벤토리에서 제거
-            closestInventory.addItem(item, itme2); // 새로운 인벤토리에 추가
+            closestInventory.addItem(item); // 새로운 인벤토리에 추가
             cc.log("✅ 아이템 이동 완료");
           } else {
             cc.log("⚠️ 아이템이 이미 인벤토리에 존재합니다.");
@@ -120,8 +122,29 @@ export function enableDrag(node, item, inventory) {
         updateUI(inventory);
         updateUI(closestInventory);
       } else if(isValidPosition(newX, newY) && isOccupied(newX, newY, closestInventory)) {
-        cc.log('아무것도 하지 않음.')
+
+        /*
+        //cc.log('아무것도 하지 않음.')
         item.node.setPosition(item.originalX, item.originalY); // ✅ 원래 위치로 복구        
+        */  
+
+              let existingItem = closestInventory.getItemAt(newX, newY); // ✅ 현재 위치의 기존 아이템 가져오기
+              if (existingItem) {
+                // ✅ 기존 아이템과 드래그한 아이템의 위치 변경
+                existingItem.node.setPosition(item.originalX, item.originalY); 
+                item.node.setPosition(closestInventory.getGridPosition(newX, newY));
+        
+                // ✅ 인벤토리 데이터 업데이트
+                inventory.removeItem(item);
+                closestInventory.removeItem(existingItem);
+                
+                inventory.addItem(existingItem);
+                closestInventory.addItem(item);
+        
+                cc.log("✅ 아이템 스왑 완료!");
+              }
+            
+        
         updateUI(inventory);
         updateUI(closestInventory);
       } else {
