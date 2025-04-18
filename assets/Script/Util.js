@@ -8,6 +8,7 @@
 */
 
 import { inventoryManager } from "./SceneParser.js";
+import { getConfig } from "./Config.js";
 
 export function loadJSONData(path, callback) {
   cc.resources.load(path, cc.JsonAsset, (err, jsonAsset) => {
@@ -20,6 +21,8 @@ export function loadJSONData(path, callback) {
       callback(jsonAsset.json);
   });
 }
+
+const GRID_SIZE = getConfig().GRID_SIZE; // ✅ 그리드 크기 설정
 
 export function isValidPosition(x, y) {
   return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
