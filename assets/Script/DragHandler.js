@@ -2,13 +2,12 @@
  * DragHandler.js - 아이템 드래그 기능
  * 아이템을 터치로 이동시키고, 인벤토리 밖으로 드랍 시 제거
  */
-
-import { parseInventories } from "./SceneParser.js";
+ 
 import { isValidPosition, isOccupied, sanitizeInventoryName, getInventoryComponentName, findValidComponent} from "./Util.js";
 import { updateUI } from "./UIManager.js";
 import { inventoryManager } from "./SceneParser.js";
 import { borderPadding, cellSpacing, CELL_SIZE } from "./Config.js";
-import { getClosestInventory } from "./Util.js";
+import { getClosestInventory, findInventoryNodes } from "./Util.js";
 
 // 아이템을 인벤1, 2에서 다시 1로 옮길 때 가려짐
 // 아이템을 클릭하면 사라짐
@@ -43,7 +42,7 @@ export function enableDrag(node, item, inventory) {
   });
 
   node.on(cc.Node.EventType.TOUCH_END, (event) => {
-    const inventories = parseInventories(cc.director.getScene()); // ✅ 씬에서 인벤토리 가져오기
+    const inventories = findInventoryNodes(cc.director.getScene()); // ✅ 씬에서 인벤토리 가져오기
     cc.log('cc.director.getScene(): ', cc.director.getScene())
     cc.log('inventories: ', inventories)
     let closestInventory = getClosestInventory(node); // ✅ 겹치는 인벤토리 찾기

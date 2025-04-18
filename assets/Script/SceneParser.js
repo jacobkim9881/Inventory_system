@@ -5,7 +5,7 @@
 import { InventoryManager } from "./InventoryManager.js";
 import { distributeItems } from "./InventoryDistribution.js"; 
 import { mergeConfig, getConfig } from "./Config.js"; 
-import { getClosestInventory } from "./Util.js";
+import { getClosestInventory, findInventoryNodes } from "./Util.js";
 
 let inventoryManager = null;
 
@@ -15,9 +15,9 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
     throw new Error("❌ 씬 로드 오류: 씬이 정상적으로 로드되지 않았습니다.");
   }
 
-  const inventories = parseInventories(scene);
+  const inventories = findInventoryNodes(scene);
   inventoryManager = new InventoryManager(inventories);    
-  const config = getConfig(); // ✅ 기존 설정 값 가져오기
+  const config = getConfig(); // ✅ 기존 설정 값 가져오기 
 
   cc.log("✅ inventoryManager 생성 완료:", inventoryManager);
 
