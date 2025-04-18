@@ -31,6 +31,10 @@ export class Inventory extends cc.Component {
                 item === targetItem || (item.children && this.hasItemRecursive(item.children, targetItem))
             );
         }
+        
+        getItemAt(x, y) {
+            return this.items.find(item => item.x === x && item.y === y) || null;
+        }
 
         addItem(item, item2) {
             const inventoryComponent = findInventoryComponent(this.node);
@@ -40,7 +44,7 @@ export class Inventory extends cc.Component {
             const items = findValidComponent(this.node, "Inventory", "Sprite").items;
             console.log("📌 현재 items 배열:", items);
             
-        cc.log('item2: ', item2)
+        //cc.log('item2: ', item2)
             console.log("📌 현재 this.items 배열:", this.items);
 console.log("📌 this.items.length:", this.items.length);
 console.log("📌 this.items[0]:", this.items[0]); // ✅ 첫 번째 요소가 존재하는지 확인
