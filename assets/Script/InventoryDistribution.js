@@ -15,8 +15,27 @@ export function distributeItems(inventory1, inventory2, totalSlots, requiredItem
     return;
   }
 
-  function assignItemsToInventory(inventory, itemCount, totalSlots, value) {
+  function assignItemsToInventory(inventory, itemCount, totalSlots, value) {    
     cc.log('assignItemsToInventory(inventory: ', inventory) 
+    
+    let assignedSlots = new Set(); // ✅ 이미 할당된 좌표 추적
+
+    for (let i = 0; i < itemCount; i++) {
+        let randX, randY;
+        do {
+            randX = Math.floor(Math.random() * totalSlots);
+            randY = Math.floor(Math.random() * totalSlots);
+        } while (assignedSlots.has(`${randX},${randY}`));
+
+        assignedSlots.add(`${randX},${randY}`);
+
+        let item = inventory.getItemAt(randX, randY);
+        if (item) {
+            item.value = value; // ✅ 기존 아이템의 value 변경
+        }
+    }
+
+    /*
     for (let i = 0; i < itemCount; i++) {
       let xPos, yPos;
       do {
@@ -26,7 +45,9 @@ export function distributeItems(inventory1, inventory2, totalSlots, requiredItem
     
       addItemToInventory(inventory, xPos, yPos, value);
     }
-  }
+    */
+  } 
+
 
   assignItemsToInventory(inventory1, requiredItemACount_Inv1 + requiredItemBCount_Inv1, totalSlots, valueA);
   assignItemsToInventory(inventory2, requiredItemACount_Inv2 + requiredItemBCount_Inv2, totalSlots, valueB);
