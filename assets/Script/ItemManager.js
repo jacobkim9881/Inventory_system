@@ -4,6 +4,7 @@
  */
 import { getConfig } from "./Config.js";
 import { isOccupied, isValidPosition } from "./Util.js";
+
 export function addItemToInventory(inventory, xPos = null, yPos = null, value = 0) {
 
   let { x, y } = inventory;
@@ -16,6 +17,9 @@ export function addItemToInventory(inventory, xPos = null, yPos = null, value = 
 
   if (xPos && yPos || !isOccupied(x, y, inventory)) {
     let newItem = createItemSprite(finalXPos, finalYPos, finalValue); // ✅ `value` 반영
+    cc.log('inventory: ', inventory)
+    cc.log('inventory.addItem: ', inventory.addItem)
+    cc.log('newItem: ', newItem)
     inventory.addItem(newItem);
   } else {
     do {
@@ -33,6 +37,22 @@ export function addItemToInventory(inventory, xPos = null, yPos = null, value = 
       inventory.addItem(newItem);
     }
   }
+}
+
+export function fillInventoryWithItems(inventory, totalSlots, value) {  
+  let arr = []; 
+  const gridSize = Math.floor(Math.sqrt(totalSlots)); // ✅ 정사각형 크기 결정
+
+  for (let xPos = 0; xPos < gridSize; xPos++) {   
+      for (let yPos = 0; yPos < gridSize; yPos++) {  
+          arr.push({ xPos, yPos }); // ✅ 좌표 배열에 추가
+          
+          if (isValidPosition(xPos, yPos) && !isOccupied(xPos, yPos, inventory)) {  
+              addItemToInventory(inventory, xPos, yPos, value); // ✅ 모든 좌표에 아이템 추가  
+          }  
+      }  
+  }  
+  cc.log('find arr: ', arr); // ✅ 좌표 배열 출력
 }
 
 function createItemSprite(x, y, value) {
