@@ -7,8 +7,22 @@ import { distributeItems } from "./InventoryDistribution.js";
 import { mergeConfig, getConfig } from "./Config.js"; 
 import { updateUI } from "./UIManager.js";
 import { getClosestInventory, findInventoryNodes, findValidComponent } from "./Util.js";
+import { fillInventoryWithItems } from "./ItemManager.js";  
 
 let inventoryManager = null;
+
+
+export function setupScene(scene) {  
+    const inventories = findInventoryNodes(scene); // ✅ 씬에서 인벤토리 가져오기  
+     
+      const config = getConfig(); // ✅ 기존 설정 값 가져오기 
+    inventories.forEach(inventory => {  
+      //getClosestInventory 쓰지 않으면 에러. inventory.addItem이 없어서 그럼.
+      // 앞으로도 이런 혼란 계속 잇을듯..
+      inventory = getClosestInventory(inventory); // ✅ 인벤토리 가져오기
+        fillInventoryWithItems(inventory, config.TOTAL_SLOTS, null); // ✅ 모든 슬롯에 아이템 채우기  
+    });  
+}
 
 cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {  
   const scene = cc.director.getScene();
@@ -22,6 +36,7 @@ cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
 
   cc.log("✅ inventoryManager 생성 완료:", inventoryManager);
 
+  setupScene(scene)
 
   mergeConfig({
     TOTAL_SLOTS: config.TOTAL_SLOTS, // ✅ 기존 설정 유지
